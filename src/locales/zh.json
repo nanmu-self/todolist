@@ -1,0 +1,29 @@
+{
+  "placeholder": "新增待办事项...",
+  "submit": "提交",
+
+  "emptyFirst": "添加你的第一个待办事项",
+  "howToUse": "食用方法",
+  "enterSupported": "所有提交操作支持Enter回车键提交",
+  "dragSort": "拖拽Todo上下移动可排序(仅支持PC)",
+  "editable": "双击上面的标语和 Todo 可进行编辑",
+  "shortcuts": "右侧的小窗口是快捷操作哦",
+  "dataStorage": "所有的Todo数据存储在浏览器本地",
+  "importExport": "支持下载和导入，导入追加到当前序列",
+
+  "languageToggle": "语言切换",
+  "shortcutName": "快捷操作",
+  "side-bar": {
+    "shortcutToggleOn": "开✨",
+    "shortcutToggleOff": "关",
+    "filterAll": "全部",
+    "importButton": "导入(txt/json)",
+    "toggleShortcuts": "快捷操作",
+    "status_in_progress": "进行中",
+    "status_completed": "已完成",
+    "mark_all_as_completed": "全部标为已完成",
+    "clear_completed": "清除已完成",
+    "clear_all": "清除全部",
+    "export_data": "导出数据"
+  }
+}

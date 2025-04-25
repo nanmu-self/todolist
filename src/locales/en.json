@@ -1,0 +1,29 @@
+{
+  "placeholder": "Add a to-do item...",
+  "submit": "Submit",
+
+  "emptyFirst": "Add your first to-do item",
+  "howToUse": "Usage tips",
+  "enterSupported": " Press Enter to submit",
+  "dragSort": " Drag to reorder (PC only)",
+  "editable": " Double-click to edit",
+  "shortcuts": " Side panel for quick actions",
+  "dataStorage": " All data stored locally",
+  "importExport": " Support import/export",
+
+  "languageToggle": "Language",
+  "shortcutName": "Shortcuts",
+  "side-bar": {
+    "shortcutToggleOn": "On✨",
+    "shortcutToggleOff": "Off",
+    "filterAll": "All",
+    "importButton": "Import (txt/json)",
+    "toggleShortcuts": "Toggle shortcuts",
+    "status_in_progress": "In Progress",
+    "status_completed": "Completed",
+    "mark_all_as_completed": "Mark All as Completed",
+    "clear_completed": "Clear Completed",
+    "clear_all": "Clear All",
+    "export_data": "Export Data"
+  }
+}
