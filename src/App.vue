@@ -93,7 +93,7 @@
             appear
           >
             <li
-              v-for="(todo, index) in todos"
+              v-for="(todo, index) in conditionFilter"
               :key="todo.id"
               class="todo-item"
               @dragenter="dragenter($event, index)"
@@ -131,7 +131,10 @@
               </div>
 
               <!-- 删除 -->
-              <div class="todo-btn btn-delete" @click="removeTodo(todo)">
+              <div
+                class="todo-btn btn-delete"
+                @click="store.removeTodo(todo.id)"
+              >
                 <img src="./assets/img/del.svg" alt="删除" draggable="false" />
               </div>
               <!-- 编辑 -->
@@ -217,7 +220,11 @@
 <script setup>
 import ActionMenu from "./components/ActionMenu.vue";
 import { ref, computed } from "vue";
-const todos = ref([]);
+import { useDataStore } from "./stores/userStore.js";
+import { storeToRefs } from "pinia";
+const store = useDataStore();
+const { conditionFilter, todos } = storeToRefs(store);
+// const todos = ref([]);
 const newTodoTitle = ref("");
 const checkEmpty = ref(false);
 const delayTime = ref("1");
@@ -234,6 +241,7 @@ const addTodo = () => {
     checkEmpty.value = true;
     return;
   }
+
   todos.value.unshift({
     id: todos.value.length + 1,
     title: newTodoTitle.value,
@@ -255,6 +263,10 @@ const editdTodo = (todo) => {
     title: todo.title,
   };
 };
+
+const completedTodosCount = computed(() => {
+  return todos.length && todos.filter((todo) => todo.completed).length;
+});
 // 编辑回车确认
 const editDone = (todo) => {
   if (!todo.title) {

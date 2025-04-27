@@ -1,6 +1,7 @@
 # 依赖目录
 node_modules/
 dist/
+.vite-inspect/
 .DS_Store
 package-lock.json
 

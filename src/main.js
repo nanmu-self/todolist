@@ -1,6 +1,8 @@
 import { createApp } from "vue";
 import { createI18n } from "vue-i18n";
 import "./style.css";
+import { createPinia } from "pinia";
+
 import App from "./App.vue";
 
 // 导入语言文件
@@ -18,6 +20,7 @@ const i18n = createI18n({
 });
 
 const app = createApp(App);
+app.use(createPinia());
 app.directive("focus", {
   mounted(el) {
     el.focus();
