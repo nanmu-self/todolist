@@ -41,8 +41,9 @@ const clearCompleted = () => {
 const clearAll = () => {
   console.log("Clearing all todos");
   // 实现清除全部的逻辑
-  leftTodosCount.value = 0; // 示例更新
-  completedTodosCount.value = 0; // 示例更新
+  showMessageBox("确认清除全部待办事项?").then(() => {
+    todos.value = [];
+  });
 };
 
 const handleClickDownload = () => {
@@ -81,6 +82,14 @@ const buttonItems = computed(() => [
     isSelected: intention.value === "completed",
     key: "completed",
   },
+  // {
+  //   value: "回收站",
+  //   class: "btn-small action-completed",
+  //   action: () => (intention.value = "completed"),
+  //   condition: todos.value.some((todo) => todo.completed), // 当有已完成待办时显示
+  //   isSelected: intention.value === "completed",
+  //   key: "removed",
+  // },
   {
     value: "全部标为已完成",
     class: "btn-small completed-all",

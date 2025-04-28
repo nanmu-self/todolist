@@ -265,7 +265,9 @@ const editdTodo = (todo) => {
 };
 
 const completedTodosCount = computed(() => {
-  return todos.length && todos.filter((todo) => todo.completed).length;
+  return (
+    todos.value.length && todos.value.filter((todo) => todo.completed).length
+  );
 });
 // 编辑回车确认
 const editDone = (todo) => {

@@ -16,7 +16,7 @@ export function showMessageBox(message) {
       onCancel: () => {
         render(null, container);
         document.body.removeChild(container);
-        reject("cancel"); // 点了取消，或者超时
+        reject("cancel"); // 点了取消
       },
     });
 
