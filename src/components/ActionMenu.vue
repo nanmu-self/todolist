@@ -8,12 +8,6 @@ const store = useDataStore();
 const { intention, todos } = storeToRefs(store);
 const isShow = ref(true);
 
-const leftTodosCount = computed(() => {
-  return todos.value.filter((todo) => !todo.completed).length;
-});
-const completedTodosCount = computed(() => {
-  return todos.value.filter((todo) => todo.completed).length;
-});
 const shortCutAction = () => {
   isShow.value = !isShow.value;
 };

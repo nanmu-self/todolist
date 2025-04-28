@@ -58,15 +58,19 @@
           <div class="bar-message" style="background-color: var(--bg-normal)">
             <input
               type="button"
-              class="btn btn-label btn-allFinish action"
-              value="分类"
-              @click="markAllAsCompleted"
+              class="btn btn-label btn-allFinish"
+              value="全部"
+              :class="{ action: selectedCategory == 0 }"
+              @click="selectedCategory = 0"
             />
             <input
+              v-for="category in categorys"
+              :key="category.id"
               type="button"
               class="btn btn-label btn-allFinish"
-              value="分类2"
-              @click="markAllAsCompleted"
+              :value="category.title"
+              :class="{ action: selectedCategory == category.id }"
+              @click="selectedCategory = category.id"
             />
           </div>
 
@@ -223,7 +227,8 @@ import { ref, computed } from "vue";
 import { useDataStore } from "./stores/userStore.js";
 import { storeToRefs } from "pinia";
 const store = useDataStore();
-const { conditionFilter, todos } = storeToRefs(store);
+const { conditionFilter, todos, categorys, selectedCategory } =
+  storeToRefs(store);
 // const todos = ref([]);
 const newTodoTitle = ref("");
 const checkEmpty = ref(false);
@@ -246,6 +251,7 @@ const addTodo = () => {
     id: todos.value.length + 1,
     title: newTodoTitle.value,
     completed: false,
+    category: selectedCategory.value,
   });
   newTodoTitle.value = "";
   checkEmpty.value = false;
