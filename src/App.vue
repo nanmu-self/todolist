@@ -217,29 +217,102 @@
             >中</a
           >
         </div>
+        <div
+          style="
+            font-size: 0.8rem;
+            font-weight: 900;
+            margin-left: 1rem;
+            cursor: pointer;
+          "
+          @click="loginBtn"
+        >
+          登录
+        </div>
       </div>
     </div>
   </div>
+  <Dialog ref="dialog" :title="isLogin ? '请注册' : '请登录'">
+    <template #content>
+      <input
+        type="text"
+        class="custom-alert-input"
+        v-model="fromData.username"
+        placeholder="邮箱"
+        required
+      />
+      <input
+        type="password"
+        class="custom-alert-input"
+        v-model="fromData.password"
+        placeholder="密码"
+        required
+      />
+      <input
+        v-if="isLogin"
+        type="password"
+        class="custom-alert-input"
+        v-model="fromData.confirmPassword"
+        placeholder="确认密码"
+        required
+      />
+      <div style="display: flex; align-items: center">
+        <input
+          type="password"
+          class="custom-alert-input"
+          v-model="fromData.code"
+          placeholder="验证码"
+          required
+        />
+        <div v-html="captchaImage"></div>
+      </div>
+    </template>
+    <template #btn>
+      <div class="custom-alert-buttons" style="justify-content: space-between">
+        <button class="custom-alert-btn confirm" @click="isLogin = !isLogin">
+          {{ isLogin ? "去登录" : "去注册" }}
+        </button>
+        <div class="custom-alert-buttons">
+          <button class="custom-alert-btn cancel" @click="loginBtn">
+            取消
+          </button>
+          <button class="custom-alert-btn confirm" @click="submit">
+            {{ isLogin ? "注册" : "登录" }}
+          </button>
+        </div>
+      </div>
+    </template>
+  </Dialog>
 </template>
 <script setup>
-import ActionMenu from "./components/ActionMenu.vue";
+import ActionMenu from "@/components/ActionMenu.vue";
+import Dialog from "@/components/Dialog.vue";
 import { ref, computed } from "vue";
-import { useDataStore } from "./stores/userStore.js";
+import { useDataStore } from "@/stores/userStore.js";
 import { storeToRefs } from "pinia";
 const store = useDataStore();
 const { conditionFilter, todos, categorys, selectedCategory } =
   storeToRefs(store);
-// const todos = ref([]);
+const captchaImage = ref("");
+const isLogin = ref(false);
 const newTodoTitle = ref("");
 const checkEmpty = ref(false);
 const delayTime = ref("1");
 const editedTodo = ref(null);
 const show = ref(true);
+const fromData = ref({
+  username: "",
+  password: "",
+  confirmPassword: "",
+  code: "",
+});
 
 const emptyChecked = computed(() => {
   return newTodoTitle.value.length === 0 && checkEmpty.value;
 });
-
+const dialog = ref(null);
+const loginBtn = () => {
+  dialog.value.switchShow();
+};
 // 添加todo
 const addTodo = () => {
   if (!newTodoTitle.value) {
@@ -331,4 +404,12 @@ const dragstart = (index) => {
 };
 </script>
 
-<style></style>
+<style>
+/* 添加基础样式 */
+.custom-alert-input {
+  width: 100%;
+  padding: 8px;
+  margin: 8px 0;
+  box-sizing: border-box;
+}
+</style>

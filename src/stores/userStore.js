@@ -1,9 +1,11 @@
 import { defineStore } from "pinia";
+import FingerprintJS from "@fingerprintjs/fingerprintjs";
 import { ref, computed } from "vue";
-
+import { showMessageBox } from "../utils/MessageBox.js";
 export const useDataStore = defineStore("userdata", () => {
   const intention = ref("all");
   const selectedCategory = ref(0); //分类
+  const fingerprint = ref(""); //用户指纹
   const categorys = ref([
     {
       id: 1,
@@ -81,8 +83,21 @@ export const useDataStore = defineStore("userdata", () => {
   };
   //删除单个
   const removeTodo = (id) => {
-    todos.value = todos.value.filter((todo) => todo.id !== id);
+    showMessageBox("确认删除该事项？").then(() => {
+      todos.value = todos.value.filter((todo) => todo.id !== id);
+    });
   };
+
+  //获取浏览器指纹
+  FingerprintJS.load().then((fp) => {
+    // 2. 获取指纹
+    fp.get().then((result) => {
+      const visitorId = result.visitorId;
+      // console.log(result);
+      // console.log(visitorId); // 打印出用户的唯一 ID
+      fingerprint.value = visitorId;
+    });
+  });
 
   return {
     todos,
