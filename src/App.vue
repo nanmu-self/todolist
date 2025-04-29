@@ -262,8 +262,9 @@
           v-model="fromData.code"
           placeholder="验证码"
           required
+          style="margin-right: 8px"
         />
-        <div v-html="captchaImage"></div>
+        <img style="margin-left: 8px" :src="captchaImage" alt="验证码" />
       </div>
     </template>
     <template #btn>
@@ -286,13 +287,13 @@
 <script setup>
 import ActionMenu from "@/components/ActionMenu.vue";
 import Dialog from "@/components/Dialog.vue";
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 import { useDataStore } from "@/stores/userStore.js";
 import { storeToRefs } from "pinia";
 const store = useDataStore();
-const { conditionFilter, todos, categorys, selectedCategory } =
+const { conditionFilter, todos, categorys, selectedCategory, fingerprint } =
   storeToRefs(store);
-const captchaImage = ref("");
+const captchaImage = ref(import.meta.env.VITE_API_URL);
 const isLogin = ref(false);
 const newTodoTitle = ref("");
 const checkEmpty = ref(false);
@@ -306,13 +307,26 @@ const fromData = ref({
   code: "",
 });
 
+watch(isLogin, (val) => {
+  getCode(val ? "register" : "login");
+});
 const emptyChecked = computed(() => {
   return newTodoTitle.value.length === 0 && checkEmpty.value;
 });
 const dialog = ref(null);
 const loginBtn = () => {
   dialog.value.switchShow();
+  getCode("login");
 };
+// 获取验证码
+const getCode = (scene) => {
+  captchaImage.value =
+    import.meta.env.VITE_API_URL +
+    `/login/getcode?uuid=${fingerprint.value}&scene=` +
+    scene;
+};
+//确认按钮，登录或者注册
+const submit = () => {};
 // 添加todo
 const addTodo = () => {
   if (!newTodoTitle.value) {

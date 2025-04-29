@@ -106,6 +106,7 @@ export const useDataStore = defineStore("userdata", () => {
     intention,
     categorys,
     selectedCategory,
+    fingerprint,
     completeAll,
     removeCompleted,
     removeAll,
