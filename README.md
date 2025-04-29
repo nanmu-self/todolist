@@ -1,14 +1,12 @@
-
 # 🌟 精致待办清单 Todo List 📝
 
 > 一款结合精美动画与现代化设计的待办事项管理工具，支持拖拽排序、状态分类和多语言支持！
-
-![项目截图](public/28899.jpg)
+> <img src="public/28899.jpg" alt="ricocc-wechat" width="640" height="auto" style="border-radius:12px;display:inline-block;margin:12px;">
 
 ## ✨ 特色亮点
 
-- 🎨 **精美界面**：简约现代的UI设计，赏心悦目
-- 🔄 **拖拽排序**：直观调整任务优先级（PC端支持）
+- 🎨 **精美界面**：简约现代的 UI 设计，赏心悦目
+- 🔄 **拖拽排序**：直观调整任务优先级（PC 端支持）
 - 🌓 **多语言支持**：支持中文和英文界面切换
 - 💾 **本地存储**：数据安全存储在浏览器本地
 - 📋 **分类管理**：工作、生活、学习多种分类
@@ -68,17 +66,19 @@ npm run build
 ### 使用技巧
 
 - 双击待办事项可以编辑内容
-- 拖拽待办事项可以调整顺序（仅PC端支持）
+- 拖拽待办事项可以调整顺序（仅 PC 端支持）
 - 使用右侧快捷操作面板进行批量操作
 - 点击语言切换按钮可以在中英文之间切换
 
 ## 🖼️ 界面预览
 
 ### 主界面
-![主界面](public/28899.jpg)
+
+<img src="public/28899.jpg" alt="ricocc-wechat" width="640" height="auto" style="border-radius:12px;display:inline-block;margin:12px;">
 
 ### 任务编辑
-![任务编辑](public/22944.jpg)
+
+<img src="public/22944.jpg" alt="ricocc-wechat" width="640" height="auto" style="border-radius:12px;display:inline-block;margin:12px;">
 
 ## 📝 开发计划
 
@@ -108,10 +108,12 @@ npm run build
 
 ## 🙏 致谢
 
-UI设计灵感来自 [ricocc/uiineed-todo-list](https://github.com/ricocc/uiineed-todo-list?ref=opensource-todo)，感谢原作者的优秀设计。
+UI 设计灵感来自 [ricocc/uiineed-todo-list](https://github.com/ricocc/uiineed-todo-list?ref=opensource-todo)，感谢原作者的优秀设计。
 
 ---
 
 ⭐️ 如果您喜欢这个项目，请给它一个星标！
+
 ```
 
+```
