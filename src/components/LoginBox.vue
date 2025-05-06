@@ -72,13 +72,13 @@
 </template>
 <script setup>
 import Dialog from "@/components/Dialog.vue";
-import { sendEmailCode } from "@/api/login.js";
+import { sendEmailCode, register } from "@/api/login.js";
 import { ref, watch } from "vue";
 import { useDataStore } from "@/stores/userStore.js";
 import { storeToRefs } from "pinia";
 import { showMessageBox } from "@/utils/MessageBox.js";
 const store = useDataStore();
-const { fingerprint } = storeToRefs(store);
+const { fingerprint, token, email } = storeToRefs(store);
 
 const captchaImage = ref(import.meta.env.VITE_API_URL);
 const isLogin = ref(false);
@@ -87,9 +87,9 @@ const emailIsCounting = ref(false);
 
 const dialog = ref(null);
 const fromData = ref({
-  email: "",
-  password: "",
-  confirmPassword: "",
+  email: "157884200@qq.com",
+  password: "z157884200",
+  confirmPassword: "z157884200",
   code: "",
   emailCode: "", // 新增邮箱验证码字段
 });
@@ -106,7 +106,7 @@ watch(isLogin, (val) => {
 const getCode = (scene) => {
   captchaImage.value =
     import.meta.env.VITE_API_URL +
-    `/login/getcode?uuid=${fingerprint.value}&scene=` +
+    `/auth/getcode?uuid=${fingerprint.value}&scene=` +
     scene;
 };
 // const rules ={
@@ -158,7 +158,7 @@ const sendEmailCodeBtn = async () => {
   }, 1000);
 };
 //确认按钮，登录或者注册
-const submit = () => {
+const submit = async () => {
   // 邮箱格式验证
 
   if (!fromData.value.email || !emailRegex.test(fromData.value.email)) {
@@ -195,6 +195,20 @@ const submit = () => {
 
   // 通过验证后提交数据（示例）
   console.log("表单验证通过", fromData.value);
+  await register({
+    uuid: fingerprint.value,
+    scene: isLogin.value ? "register" : "login",
+    ...fromData.value,
+  }).then((res) => {
+    if (res.errCode == 0) {
+      showMessageBox("🎉注册成功!");
+      token.value = res.data.token;
+      email.value = res.data.email;
+      dialog.value.switchShow();
+    } else {
+      showMessageBox(res.errMsg);
+    }
+  });
   // 这里可以添加实际的提交逻辑
 };
 defineExpose({

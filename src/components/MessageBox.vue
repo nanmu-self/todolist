@@ -1,7 +1,7 @@
 <template>
   <div class="custom-alert-overlay">
     <div class="custom-alert">
-      <div class="custom-alert-title">请确认</div>
+      <div class="custom-alert-title">{{ title }}</div>
       <div
         class="custom-alert-content"
         style="font-size: 18px; font-weight: 500"
@@ -22,6 +22,10 @@
 <script setup>
 // 接收父组件传进来的 props
 const props = defineProps({
+  title: {
+    type: String,
+    default: "提示",
+  },
   message: {
     type: String,
     required: true,

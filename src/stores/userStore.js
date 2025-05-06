@@ -1,11 +1,13 @@
 import { defineStore } from "pinia";
 import FingerprintJS from "@fingerprintjs/fingerprintjs";
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 import { showMessageBox } from "../utils/MessageBox.js";
 export const useDataStore = defineStore("userdata", () => {
   const intention = ref("all");
   const selectedCategory = ref(0); //分类
   const fingerprint = ref(""); //用户指纹
+  const token = ref(localStorage.getItem("token") || "");
+  const email = ref(localStorage.getItem("email") || "");
   const categorys = ref([
     {
       id: 1,
@@ -40,6 +42,14 @@ export const useDataStore = defineStore("userdata", () => {
       category: 3,
     },
   ]);
+  //持久化存储token
+  watch(token, (newVal) => {
+    localStorage.setItem("token", newVal);
+  });
+  //持久化存储userInfo
+  watch(email, (newVal) => {
+    localStorage.setItem("email", newVal);
+  });
   //条件筛选
   const conditionFilter = computed(() => {
     let filtered = todos.value;
@@ -107,6 +117,8 @@ export const useDataStore = defineStore("userdata", () => {
     categorys,
     selectedCategory,
     fingerprint,
+    token,
+    userInfo,
     completeAll,
     removeCompleted,
     removeAll,
