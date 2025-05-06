@@ -2,7 +2,12 @@
   <div class="custom-alert-overlay">
     <div class="custom-alert">
       <div class="custom-alert-title">请确认</div>
-      <div class="custom-alert-content">{{ message }}</div>
+      <div
+        class="custom-alert-content"
+        style="font-size: 18px; font-weight: 500"
+      >
+        {{ message }}
+      </div>
       <div class="custom-alert-buttons">
         <button class="custom-alert-btn cancel" @click="handleCancel">
           取消
