@@ -72,11 +72,12 @@
 </template>
 <script setup>
 import Dialog from "@/components/Dialog.vue";
-import { sendEmailCode, register } from "@/api/login.js";
+import { sendEmailCode, register, login } from "@/api/login.js";
 import { ref, watch } from "vue";
 import { useDataStore } from "@/stores/userStore.js";
 import { storeToRefs } from "pinia";
 import { showMessageBox } from "@/utils/MessageBox.js";
+import md5 from "js-md5";
 const store = useDataStore();
 const { fingerprint, token, email } = storeToRefs(store);
 
@@ -192,24 +193,41 @@ const submit = async () => {
     showMessageBox("😅请输入6位邮箱验证码!❓️");
     return;
   }
+  fromData.value.password = md5(fromData.value.password);
 
   // 通过验证后提交数据（示例）
   console.log("表单验证通过", fromData.value);
-  await register({
-    uuid: fingerprint.value,
-    scene: isLogin.value ? "register" : "login",
-    ...fromData.value,
-  }).then((res) => {
-    if (res.errCode == 0) {
-      showMessageBox("🎉注册成功!");
-      token.value = res.data.token;
-      email.value = res.data.email;
-      dialog.value.switchShow();
-    } else {
-      showMessageBox(res.errMsg);
-    }
-  });
-  // 这里可以添加实际的提交逻辑
+  if (isLogin.value) {
+    await register({
+      uuid: fingerprint.value,
+      scene: "register",
+      ...fromData.value,
+    }).then((res) => {
+      if (res.errCode == 0) {
+        showMessageBox("🎉注册成功!");
+        token.value = res.data.token;
+        email.value = res.data.email;
+        dialog.value.switchShow();
+      } else {
+        showMessageBox(res.errMsg);
+      }
+    });
+  } else {
+    await login({
+      uuid: fingerprint.value,
+      scene: "login",
+      ...fromData.value,
+    }).then((res) => {
+      if (res.errCode == 0) {
+        showMessageBox("🎉登录成功!");
+        token.value = res.data.token;
+        email.value = res.data.email;
+        dialog.value.switchShow();
+      } else {
+        showMessageBox(res.errMsg);
+      }
+    });
+  }
 };
 defineExpose({
   switchShow,

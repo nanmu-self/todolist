@@ -118,7 +118,7 @@ export const useDataStore = defineStore("userdata", () => {
     selectedCategory,
     fingerprint,
     token,
-    userInfo,
+    email,
     completeAll,
     removeCompleted,
     removeAll,
