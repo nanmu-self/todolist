@@ -67,7 +67,7 @@
               v-for="category in categorys"
               :key="category.id"
               type="button"
-              class="btn btn-label btn-allFinish"
+              class="btn btn-label btn-allFinish btn-category"
               :value="category.title"
               :class="{ action: selectedCategory == category.id }"
               @click="selectedCategory = category.id"
@@ -201,21 +201,9 @@
 
         <!-- 根据需要切换中英文作为首页 -->
         <div class="language switch-language">
-          <a
-            href="index.html"
-            class="en"
-            draggable="false"
-            @click="saveLanguage('en')"
-            >En</a
-          >
+          <a class="en" draggable="false" @click="saveLanguage('en')">En</a>
           <span>/</span>
-          <a
-            href="javascript:;"
-            target="_self"
-            class="zh active"
-            draggable="false"
-            >中</a
-          >
+          <a target="_self" class="zh active" draggable="false">中</a>
         </div>
         <div
           style="
@@ -226,7 +214,8 @@
           "
           @click="loginBtn"
         >
-          登录
+          {{ email ? email : "登录" }}
+          <span v-if="email">退出登录</span>
         </div>
       </div>
     </div>
@@ -234,13 +223,14 @@
   <LoginBox ref="loginBox" />
 </template>
 <script setup>
+import { showMessageBox } from "@/utils/MessageBox.js";
 import ActionMenu from "@/components/ActionMenu.vue";
 import LoginBox from "./components/LoginBox.vue";
 import { ref, computed } from "vue";
 import { useDataStore } from "@/stores/userStore.js";
 import { storeToRefs } from "pinia";
 const store = useDataStore();
-const { conditionFilter, todos, categorys, selectedCategory } =
+const { conditionFilter, todos, categorys, selectedCategory, email, token } =
   storeToRefs(store);
 
 const newTodoTitle = ref("");
@@ -254,7 +244,14 @@ const emptyChecked = computed(() => {
 });
 const loginBox = ref(null);
 const loginBtn = () => {
-  loginBox.value.switchShow();
+  if (email.value) {
+    showMessageBox("是否退出登录?", "请确认").then(() => {
+      email.value = "";
+      token.value = "";
+    });
+  } else {
+    loginBox.value.switchShow();
+  }
 };
 
 // 添加todo
@@ -347,3 +344,8 @@ const dragstart = (index) => {
   dragIndex = index;
 };
 </script>
+<style scoped>
+.btn-category::after {
+  content: "x";
+}
+</style>
