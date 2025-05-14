@@ -71,7 +71,7 @@
   </Dialog>
 </template>
 <script setup>
-import Dialog from "@/components/Dialog.vue";
+import Dialog from "@/common/Dialog.vue";
 import { sendEmailCode, register, login } from "@/api/login.js";
 import { ref, watch } from "vue";
 import { useDataStore } from "@/stores/userStore.js";
