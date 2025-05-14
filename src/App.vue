@@ -55,25 +55,7 @@
       </div>
       <div class="container main">
         <div class="todo-list-box">
-          <div class="bar-message" style="background-color: var(--bg-normal)">
-            <input
-              type="button"
-              class="btn btn-label btn-allFinish"
-              value="全部"
-              :class="{ action: selectedCategory == 0 }"
-              @click="selectedCategory = 0"
-            />
-            <input
-              v-for="category in categorys"
-              :key="category.id"
-              type="button"
-              class="btn btn-label btn-allFinish btn-category"
-              :value="category.title"
-              :class="{ action: selectedCategory == category.id }"
-              @click="selectedCategory = category.id"
-            />
-          </div>
-
+          <Classification />
           <ul v-if="!todos.length" class="empty-tips">
             <li>添加你的第一个待办事项！📝</li>
             <li>食用方法💡：</li>
@@ -223,14 +205,16 @@
   <LoginBox ref="loginBox" />
 </template>
 <script setup>
+import Classification from "@/components/Classification.vue";
 import { showMessageBox } from "@/utils/MessageBox.js";
 import ActionMenu from "@/components/ActionMenu.vue";
 import LoginBox from "./components/LoginBox.vue";
 import { ref, computed } from "vue";
 import { useDataStore } from "@/stores/userStore.js";
 import { storeToRefs } from "pinia";
+
 const store = useDataStore();
-const { conditionFilter, todos, categorys, selectedCategory, email, token } =
+const { conditionFilter, todos, selectedCategory, email, token } =
   storeToRefs(store);
 
 const newTodoTitle = ref("");
