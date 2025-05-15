@@ -10,11 +10,11 @@ service.interceptors.request.use(
   function (config) {
     // 在发送请求之前做些什么
     //自动添加token到请求头
-    // const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
 
-    // if (token) {
-    //   config.headers.authorization = token;
-    // }
+    if (token) {
+      config.headers.authorization = token;
+    }
     return config;
   },
   function (error) {
