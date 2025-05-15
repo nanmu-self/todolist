@@ -36,9 +36,13 @@ const show = ref(false);
 
 const switchShow = () => {
   show.value = !show.value;
+  emit("close");
 };
 
-const submit = () => {};
+const submit = () => {
+  emit("confirm");
+};
+const emit = defineEmits(["confirm", "close"]);
 
 // 导出 switchShow 方法供父组件调用
 defineExpose({
