@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import FingerprintJS from "@fingerprintjs/fingerprintjs";
 import { ref, computed, watch } from "vue";
-import { showMessageBox } from "../utils/MessageBox.js";
+import { showMessageBox } from "@/utils/MessageBox.js";
 export const useDataStore = defineStore("userdata", () => {
   const intention = ref("all");
   const selectedCategory = ref(0); //分类
@@ -9,38 +9,50 @@ export const useDataStore = defineStore("userdata", () => {
   const token = ref(localStorage.getItem("token") || "");
   const email = ref(localStorage.getItem("email") || "");
   const categorys = ref([
-    {
-      id: 1,
-      title: "工作",
-    },
-    {
-      id: 2,
-      title: "生活",
-    },
-    {
-      id: 3,
-      title: "学习",
-    },
+    // {
+    //   _id: 1,
+    //   title: "工作",
+    // },
+    // {
+    //   _id: 2,
+    //   title: "生活",
+    // },
+    // {
+    //   _id: 3,
+    //   title: "学习",
+    // },
   ]);
   const todos = ref([
-    {
-      id: 1,
-      title: "Buy groceries",
-      completed: false,
-      category: 1,
-    },
-    {
-      id: 2,
-      title: "Clean the house",
-      completed: true,
-      category: 2,
-    },
-    {
-      id: 3,
-      title: "学习英语",
-      completed: true,
-      category: 3,
-    },
+    // {
+    //   _id: 1,
+    //   title: "Buy groceries",
+    //   completed: false,
+    //   category: 1,
+    // },
+    // {
+    //   _id: 2,
+    //   title: "Clean the house",
+    //   completed: true,
+    //   category: 2,
+    // },
+    // {
+    //   _id: 3,
+    //   title: "学习英语",
+    //   completed: true,
+    //   category: 3,
+    // },
+    // {
+    //   _id: 4,
+    //   title: "学习英语",
+    //   completed: true,
+    //   category: 3,
+    // },
+    // {
+    //   _id: 5,
+    //   title: "学习英语",
+    //   completed: true,
+    //   category: 3,
+    // },
   ]);
   //持久化存储token
   watch(token, (newVal) => {

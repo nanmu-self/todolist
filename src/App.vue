@@ -80,14 +80,14 @@
           >
             <li
               v-for="(todo, index) in conditionFilter"
-              :key="todo.id"
+              :key="todo._id"
               class="todo-item"
               @dragenter="dragenter($event, index)"
               @dragover="dragover($event, index)"
               @dragstart="dragstart(index)"
               :data-delay="index * 150 * delayTime"
               v-show="show"
-              :draggable="!(editedTodo !== null && editedTodo.id === todo.id)"
+              :draggable="!(editedTodo !== null && editedTodo._id === todo._id)"
             >
               <div
                 class="todo-content"
@@ -119,20 +119,20 @@
               <!-- 删除 -->
               <div
                 class="todo-btn btn-delete"
-                @click="store.removeTodo(todo.id)"
+                @click="store.removeTodo(todo._id)"
               >
                 <img src="./assets/img/del.svg" alt="删除" draggable="false" />
               </div>
               <!-- 编辑 -->
               <div
                 class="edit-todo-wrapper"
-                v-if="editedTodo !== null && editedTodo.id === todo.id"
+                v-if="editedTodo !== null && editedTodo._id === todo._id"
               >
                 <input
                   type="text"
                   class="edit-todo"
                   value="编辑 Todo..."
-                  v-if="editedTodo !== null && editedTodo.id === todo.id"
+                  v-if="editedTodo !== null && editedTodo._id === todo._id"
                   v-model="todo.title"
                   v-focus="true"
                   @keyup.enter="editDone(todo)"
@@ -150,6 +150,15 @@
               </div>
             </li>
           </transition-group>
+          <ul class="pagination">
+            <li class="previous">&lt;</li>
+            <li>1</li>
+            <li class="active">2</li>
+            <li>3</li>
+            <li>4</li>
+            <li>5</li>
+            <li class="next">&gt;</li>
+          </ul>
           <div class="bar-message bar-bottom">
             <div class="bar-message-text">
               <span v-if="unfinishedTodo.length > 0"
@@ -162,60 +171,22 @@
 
         <ActionMenu />
       </div>
-
-      <!-- 自定义个人的信息 -->
-      <div class="nav" draggable="false">
-        <div class="github">
-          <a
-            href="https://github.com/ricocc/uiineed-todo-list?ref=opensource-todo"
-            target="_blank"
-            class="social-link"
-            draggable="false"
-          >
-            <img
-              src="./assets/img/github.svg"
-              class="ic-social"
-              alt=""
-              draggable="false"
-            />
-          </a>
-        </div>
-
-        <!-- 根据需要切换中英文作为首页 -->
-        <div class="language switch-language">
-          <a class="en" draggable="false" @click="saveLanguage('en')">En</a>
-          <span>/</span>
-          <a target="_self" class="zh active" draggable="false">中</a>
-        </div>
-        <div
-          style="
-            font-size: 0.8rem;
-            font-weight: 900;
-            margin-left: 1rem;
-            cursor: pointer;
-          "
-          @click="loginBtn"
-        >
-          {{ email ? email : "登录" }}
-          <span v-if="email">退出登录</span>
-        </div>
-      </div>
+      <PersonalInformation />
     </div>
   </div>
-  <LoginBox ref="loginBox" />
 </template>
 <script setup>
+import PersonalInformation from "@/components/PersonalInformation.vue";
 import Classification from "@/components/Classification.vue";
-import { showMessageBox } from "@/utils/MessageBox.js";
 import ActionMenu from "@/components/ActionMenu.vue";
-import LoginBox from "./components/LoginBox.vue";
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useDataStore } from "@/stores/userStore.js";
 import { storeToRefs } from "pinia";
 
 const store = useDataStore();
-const { conditionFilter, todos, selectedCategory, email, token } =
-  storeToRefs(store);
+const { conditionFilter, todos, selectedCategory } = storeToRefs(store);
+
+onMounted(() => {});
 
 const newTodoTitle = ref("");
 const checkEmpty = ref(false);
@@ -226,17 +197,6 @@ const show = ref(true);
 const emptyChecked = computed(() => {
   return newTodoTitle.value.length === 0 && checkEmpty.value;
 });
-const loginBox = ref(null);
-const loginBtn = () => {
-  if (email.value) {
-    showMessageBox("是否退出登录?", "请确认").then(() => {
-      email.value = "";
-      token.value = "";
-    });
-  } else {
-    loginBox.value.switchShow();
-  }
-};
 
 // 添加todo
 const addTodo = () => {
@@ -331,5 +291,50 @@ const dragstart = (index) => {
 <style scoped>
 .btn-category::after {
   content: "x";
+}
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  border-radius: 50%;
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  list-style: none;
+  margin-bottom: 10px;
+}
+.pagination li {
+  margin: 0 5px;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+
+  text-align: center;
+}
+
+.pagination li:hover {
+  background-color: #f0f0f0;
+}
+
+.pagination .active {
+  background-color: #f8d2d2;
+  color: #333;
+}
+
+.pagination .previous,
+.pagination .next {
+  background-color: #9ce3d0;
+  color: #333;
+  font-weight: bold;
+}
+
+.pagination .previous.disabled,
+.pagination .next.disabled {
+  background-color: #e0e0e0;
+  color: #999;
 }
 </style>
