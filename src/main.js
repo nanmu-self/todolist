@@ -18,7 +18,7 @@ const i18n = createI18n({
     zh,
   },
 });
-
+export { i18n }; //导出 i18n 实例供外部使用
 const app = createApp(App);
 app.use(createPinia());
 app.directive("focus", {

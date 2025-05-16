@@ -3,6 +3,7 @@ import { showMessageBox } from "@/utils/MessageBox.js";
 const service = axios.create({
   baseURL: import.meta.env.VITE_API_URL, // 使用环境变量
 });
+console.log(import.meta.env.VITE_API_URL);
 
 // 添加请求拦截器
 service.interceptors.request.use(
@@ -32,8 +33,8 @@ service.interceptors.response.use(
     return response.data;
   },
   function (error) {
-    console.log(666);
-    console.log(error);
+    // console.log(666);
+    // console.log(error);
     if (error.status == 403) {
       showMessageBox("请先登录");
       localStorage.clear();
