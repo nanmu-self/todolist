@@ -1,7 +1,9 @@
 <template>
   <div class="custom-alert-overlay">
     <div class="custom-alert">
-      <div class="custom-alert-title">{{ title }}</div>
+      <div class="custom-alert-title">
+        {{ title }}
+      </div>
       <div
         class="custom-alert-content"
         style="font-size: 18px; font-weight: 500"
@@ -10,10 +12,10 @@
       </div>
       <div class="custom-alert-buttons">
         <button class="custom-alert-btn cancel" @click="handleCancel">
-          取消
+          {{ cancelText }}
         </button>
         <button class="custom-alert-btn confirm" @click="handleConfirm">
-          确定
+          {{ confirmText }}
         </button>
       </div>
     </div>
@@ -24,7 +26,6 @@
 const props = defineProps({
   title: {
     type: String,
-    default: "提示",
   },
   message: {
     type: String,
@@ -32,11 +33,15 @@ const props = defineProps({
   },
   onConfirm: {
     type: Function,
-    required: true,
   },
   onCancel: {
     type: Function,
-    required: true,
+  },
+  confirmText: {
+    type: String,
+  },
+  cancelText: {
+    type: String,
   },
 });
 
