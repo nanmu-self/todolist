@@ -3,13 +3,13 @@
   <div class="nav" draggable="false">
     <div class="github">
       <a
-        href="https://github.com/ricocc/uiineed-todo-list?ref=opensource-todo"
+        href="https://github.com/nanmu-self/todolist"
         target="_blank"
         class="social-link"
         draggable="false"
       >
         <img
-          src="./assets/img/github.svg"
+          src="@/assets/img/github.svg"
           class="ic-social"
           alt=""
           draggable="false"
