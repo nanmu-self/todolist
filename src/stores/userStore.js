@@ -59,7 +59,7 @@ export const useDataStore = defineStore("userdata", () => {
     //   category: 3,
     // },
   ]);
-  //获取分类
+  //获取任务
   const getTodo = () => {
     let params = {
       currentPage: pagedData.value.currentPage,
@@ -71,8 +71,6 @@ export const useDataStore = defineStore("userdata", () => {
       if (res.errCode === 0) {
         todos.value = res.data;
         pagedData.value = res.pagination;
-      } else {
-        showMessageBox("获取数据失败", "失败");
       }
     });
   };

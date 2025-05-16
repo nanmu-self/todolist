@@ -1,8 +1,7 @@
 import axios from "axios";
-
+import { showMessageBox } from "@/utils/MessageBox.js";
 const service = axios.create({
-  //   baseURL: import.meta.env.VITE_API_URL,
-  baseURL: "/api",
+  baseURL: import.meta.env.VITE_API_URL, // 使用环境变量
 });
 
 // 添加请求拦截器
@@ -29,12 +28,16 @@ service.interceptors.response.use(
     // 2xx 范围内的状态码都会触发该函数。
     // 对响应数据做点什么
     // return response.data.data;
-
+    console.log(response);
     return response.data;
   },
   function (error) {
     console.log(666);
     console.log(error);
+    if (error.status == 403) {
+      showMessageBox("请先登录");
+      localStorage.clear();
+    }
     // 超出 2xx 范围的状态码都会触发该函数。
     // 对响应错误做点什么
     // let msg = error.response.data.msg;

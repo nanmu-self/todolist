@@ -35,7 +35,7 @@
         <img style="margin-left: 8px" :src="captchaImage" alt="验证码" />
       </div>
 
-      <div style="display: flex; align-items: center">
+      <div style="display: flex; align-items: center" v-if="isLogin">
         <input
           type="text"
           class="custom-alert-input"
@@ -189,7 +189,10 @@ const submit = async () => {
   }
 
   // 邮箱验证码验证
-  if (!fromData.value.emailCode || fromData.value.emailCode.length !== 6) {
+  if (
+    isLogin.value &&
+    (!fromData.value.emailCode || fromData.value.emailCode.length !== 6)
+  ) {
     showMessageBox("😅请输入6位邮箱验证码!❓️");
     return;
   }
