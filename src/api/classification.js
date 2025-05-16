@@ -9,8 +9,8 @@ export function update(data) {
   return axios.post("/classification/update", data);
 }
 //查询
-export function get(data) {
-  return axios.post("/classification/get", data);
+export function get() {
+  return axios.get("/classification/get");
 }
 //删除
 export function del(data) {
