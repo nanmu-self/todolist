@@ -9,8 +9,8 @@ export function update(data) {
   return axios.post("/todo/update", data);
 }
 //查询任务
-export function get(data) {
-  return axios.post("/todo/get", data);
+export function get(params) {
+  return axios.get("/todo/get", { params });
 }
 //删除任务
 export function del(data) {

@@ -2,7 +2,7 @@
 import { ref, computed } from "vue";
 import { useDataStore } from "../stores/userStore.js";
 import { storeToRefs } from "pinia";
-import { showMessageBox } from "../utils/MessageBox.js";
+import { showMessageBox } from "@/utils/MessageBox.js";
 
 const store = useDataStore();
 const { intention, todos } = storeToRefs(store);

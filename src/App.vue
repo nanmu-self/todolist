@@ -79,7 +79,7 @@
             appear
           >
             <li
-              v-for="(todo, index) in conditionFilter"
+              v-for="(todo, index) in todos"
               :key="todo._id"
               class="todo-item"
               @dragenter="dragenter($event, index)"
@@ -150,14 +150,29 @@
               </div>
             </li>
           </transition-group>
-          <ul class="pagination">
-            <li class="previous">&lt;</li>
-            <li>1</li>
-            <li class="active">2</li>
-            <li>3</li>
-            <li>4</li>
-            <li>5</li>
-            <li class="next">&gt;</li>
+          <ul class="pagination" v-if="pagedData.totalPages > 1">
+            <li
+              class="previous"
+              v-if="pagedData.currentPage > 1"
+              @click="changePage(pagedData.currentPage - 1)"
+            >
+              &lt;
+            </li>
+            <li
+              v-for="item in pagedData.totalPages"
+              :key="item"
+              @click="store.changePage(item)"
+              :class="{ active: item === pagedData.currentPage }"
+            >
+              {{ item }}
+            </li>
+            <li
+              class="next"
+              v-if="pagedData.currentPage < pagedData.totalPages"
+              @click="changePage(pagedData.currentPage + 1)"
+            >
+              &gt;
+            </li>
           </ul>
           <div class="bar-message bar-bottom">
             <div class="bar-message-text">
@@ -179,14 +194,14 @@
 import PersonalInformation from "@/components/PersonalInformation.vue";
 import Classification from "@/components/Classification.vue";
 import ActionMenu from "@/components/ActionMenu.vue";
+import { showMessageBox } from "@/utils/MessageBox.js";
+import { update, create, get, del } from "@/api/todo.js";
 import { ref, computed, onMounted } from "vue";
 import { useDataStore } from "@/stores/userStore.js";
 import { storeToRefs } from "pinia";
 
 const store = useDataStore();
-const { conditionFilter, todos, selectedCategory } = storeToRefs(store);
-
-onMounted(() => {});
+const { todos, selectedCategory, pagedData } = storeToRefs(store);
 
 const newTodoTitle = ref("");
 const checkEmpty = ref(false);
@@ -199,19 +214,30 @@ const emptyChecked = computed(() => {
 });
 
 // 添加todo
-const addTodo = () => {
+const addTodo = async () => {
   if (!newTodoTitle.value) {
     checkEmpty.value = true;
     return;
   }
-
-  todos.value.unshift({
-    id: todos.value.length + 1,
+  let res = await create({
     title: newTodoTitle.value,
-    completed: false,
-    category: selectedCategory.value,
+    categoryId: selectedCategory.value,
   });
-  newTodoTitle.value = "";
+  if (res.errCode == 0) {
+    showMessageBox("🎉添加成功!", "成功");
+    newTodoTitle.value = "";
+    store.getTodo();
+  } else {
+    showMessageBox(" 😅添加失败!", "失败");
+  }
+
+  // todos.value.unshift({
+  //   id: todos.value.length + 1,
+  //   title: newTodoTitle.value,
+  //   completed: false,
+  //   category: selectedCategory.value,
+  // });
+
   checkEmpty.value = false;
   delayTime.value = "0";
 };
@@ -298,7 +324,7 @@ const dragstart = (index) => {
   align-items: center;
   height: 40px;
   border-radius: 50%;
-  text-decoration: none;
+
   color: #333;
   font-weight: 500;
   transition: all 0.3s ease;
@@ -312,7 +338,6 @@ const dragstart = (index) => {
   border-radius: 50%;
   width: 30px;
   height: 30px;
-
   text-align: center;
 }
 
