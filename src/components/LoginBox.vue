@@ -226,6 +226,7 @@ const submit = async () => {
         token.value = res.data.token;
         email.value = res.data.email;
         dialog.value.switchShow();
+        location.reload();
       } else {
         showMessageBox(res.errMsg);
       }
