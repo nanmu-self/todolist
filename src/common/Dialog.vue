@@ -4,7 +4,7 @@
       <!-- 添加具名插槽 header -->
 
       <div class="custom-alert-title">
-        {{ title }}
+        {{ title ? title : t("Dialog.confirmCarefully") }}
       </div>
 
       <div class="custom-alert-content">
@@ -13,9 +13,11 @@
       <slot name="btn">
         <div class="custom-alert-buttons">
           <button class="custom-alert-btn cancel" @click="switchShow">
-            取消
+            {{ t("Dialog.cancel") }}
           </button>
-          <button class="custom-alert-btn confirm" @click="submit">确定</button>
+          <button class="custom-alert-btn confirm" @click="submit">
+            {{ t("Dialog.confirm") }}
+          </button>
         </div>
       </slot>
     </div>
@@ -24,14 +26,15 @@
 
 <script setup>
 import { ref } from "vue";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 // 接收父组件传进来的 props
 const props = defineProps({
   title: {
     type: String,
-    default: "请确认",
   },
 });
-
+console.log(props);
 const show = ref(false);
 
 const switchShow = () => {

@@ -17,7 +17,7 @@
       >
         <template v-for="(item, i) in menu" :key="i">
           <div
-            v-if="clickedElementID || item.label == '添加'"
+            v-if="clickedElementID || item.label == t('ContextMenu.add')"
             class="menu-item"
             @click="handleClick(item)"
           >
@@ -31,12 +31,14 @@
   </div>
 </template>
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
+import { useI18n } from "vue-i18n";
 import useContextMenu from "./ContextMenu";
-const menu = ref([
-  { icon: "🌱", label: "添加" },
-  { icon: "🦋", label: "修改" },
-  { icon: "🍂", label: "删除" },
+const { t } = useI18n();
+const menu = computed(() => [
+  { id: 1, icon: "🌱", label: t("ContextMenu.add") },
+  { id: 2, icon: "🦋", label: t("ContextMenu.modify") },
+  { id: 3, icon: "🍂", label: t("ContextMenu.remove") },
 ]);
 const containerRef = ref(null);
 const emit = defineEmits(["select"]);

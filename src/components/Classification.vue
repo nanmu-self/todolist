@@ -4,7 +4,7 @@
       <input
         type="button"
         class="btn btn-label btn-allFinish"
-        value="全部"
+        :value="t('Category.all')"
         :class="{ action: selectedCategory == 0 }"
         @click="selectedCategory = 0"
       />
@@ -22,7 +22,7 @@
   </ContextMenu>
   <Dialog
     ref="dialog"
-    :title="fromData.categoryId ? '修改分类' : '添加分类'"
+    :title="fromData.categoryId ? t('Category.modify') : t('Category.add')"
     @confirm="handleConfirm"
     @close="handleClose"
   >
@@ -31,7 +31,7 @@
         type="text"
         class="custom-alert-input"
         v-model="fromData.title"
-        placeholder="分类名"
+        :placeholder="t('Category.placeholder.title')"
         ref="inputEl"
       />
     </template>
@@ -46,6 +46,9 @@ import ContextMenu from "@/common/ContextMenu/ContextMenu.vue";
 import { useDataStore } from "@/stores/userStore.js";
 import { storeToRefs } from "pinia";
 import { ref, onMounted, nextTick } from "vue";
+
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 
 const store = useDataStore();
 const { categorys, selectedCategory } = storeToRefs(store);
@@ -78,17 +81,17 @@ const handleConfirm = () => {
   if (fromData.value.categoryId) {
     update(fromData.value).then((res) => {
       if (res.errCode == 0) {
-        showMessageBox("🎉修改成功!", "成功");
+        showMessageBox(t("Category.success.update"), t("Category.successful"));
       } else {
-        showMessageBox(" 😅修改失败!", "失败");
+        showMessageBox(t("Category.error.update"), t("Category.failure"));
       }
     });
   } else {
     create(fromData.value).then((res) => {
       if (res.errCode == 0) {
-        showMessageBox("🎉添加成功!", "成功");
+        showMessageBox(t("Category.success.create"), t("Category.successful"));
       } else {
-        showMessageBox(" 😅添加失败!", "失败");
+        showMessageBox(t("Category.error.create"), t("Category.failure"));
       }
     });
   }
@@ -99,12 +102,12 @@ const handleConfirm = () => {
 const handleContextMenu = (menuItem, element) => {
   console.log("右键元素:", element.value); // 获取右键点击的 DOM 元素
   console.log(menuItem);
-  switch (menuItem.label) {
-    case "添加":
+  switch (menuItem.id) {
+    case 1:
       dialog.value.switchShow();
 
       break;
-    case "修改":
+    case 2:
       dialog.value.switchShow();
       fromData.value.title = categorys.value.find(
         (item) => item._id === element.value
@@ -112,9 +115,9 @@ const handleContextMenu = (menuItem, element) => {
       fromData.value.categoryId = element.value;
 
       break;
-    case "删除":
+    case 3:
       fromData.value.categoryId = element.value;
-      showMessageBox("确认删除吗？", "提示").then(() => {
+      showMessageBox(t("Category.confirmDelete")).then(() => {
         del(fromData.value).then((res) => {
           if (res.errCode == 0) {
             getMenu();

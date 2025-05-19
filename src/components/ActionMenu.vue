@@ -3,6 +3,8 @@ import { ref, computed } from "vue";
 import { useDataStore } from "../stores/userStore.js";
 import { storeToRefs } from "pinia";
 import { showMessageBox } from "@/utils/MessageBox.js";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 
 const store = useDataStore();
 const { intention, todos } = storeToRefs(store);
@@ -13,10 +15,9 @@ const shortCutAction = () => {
 };
 
 const markAllAsCompleted = () => {
-  console.log("Marking all as completed");
   // 实现标记全部完成的逻辑
 
-  showMessageBox("确认一键勾选完成全部待办事项？").then(() => {
+  showMessageBox(t("ActionMenu.confirmCheckAllDone")).then(() => {
     todos.value.forEach((todo) => {
       todo.completed = true;
     });
@@ -24,10 +25,9 @@ const markAllAsCompleted = () => {
 };
 
 const clearCompleted = () => {
-  console.log("Clearing completed todos");
   // 实现清除已完成的逻辑
 
-  showMessageBox("确认清除全部已完成的代办事项?").then(() => {
+  showMessageBox(t("ActionMenu.confirmClearAllCompleted")).then(() => {
     todos.value = todos.value.filter((todo) => !todo.completed);
   });
 };
@@ -35,7 +35,7 @@ const clearCompleted = () => {
 const clearAll = () => {
   console.log("Clearing all todos");
   // 实现清除全部的逻辑
-  showMessageBox("确认清除全部待办事项?").then(() => {
+  showMessageBox(t("ActionMenu.confirmClearAllPending")).then(() => {
     todos.value = [];
   });
 };
@@ -53,7 +53,7 @@ const triggerImport = () => {
 // 定义按钮数据数组
 const buttonItems = computed(() => [
   {
-    value: "全部",
+    value: t("ActionMenu.all"),
     class: "btn-small action-showAll",
     action: () => (intention.value = "all"),
     condition: true, // 总是显示
@@ -61,7 +61,7 @@ const buttonItems = computed(() => [
     key: "all", // 为 v-for 提供 key
   },
   {
-    value: "进行中",
+    value: t("ActionMenu.inProgress"),
     class: "btn-small action-progress",
     action: () => (intention.value = "ongoing"),
     condition: todos.value.some((todo) => !todo.completed), // 当有未完成待办时显示
@@ -69,7 +69,7 @@ const buttonItems = computed(() => [
     key: "ongoing",
   },
   {
-    value: "已完成",
+    value: t("ActionMenu.completed"),
     class: "btn-small action-completed",
     action: () => (intention.value = "completed"),
     condition: todos.value.some((todo) => todo.completed), // 当有已完成待办时显示
@@ -85,7 +85,7 @@ const buttonItems = computed(() => [
   //   key: "removed",
   // },
   {
-    value: "全部标为已完成",
+    value: t("ActionMenu.markAllAsDone"),
     class: "btn-small completed-all",
     action: markAllAsCompleted,
     condition: todos.value.some((todo) => !todo.completed), // 当有未完成待办时显示
@@ -93,7 +93,7 @@ const buttonItems = computed(() => [
     key: "markAll",
   },
   {
-    value: "清除已完成",
+    value: t("ActionMenu.clearCompleted"),
     class: "btn-small completed-clear",
     action: clearCompleted,
     condition: todos.value.filter((todo) => todo.completed).length > 0, // 当有已完成待办时显示
@@ -101,7 +101,7 @@ const buttonItems = computed(() => [
     key: "clearCompleted",
   },
   {
-    value: "清除全部",
+    value: t("ActionMenu.clearAll"),
     class: "btn-small clear-all",
     action: clearAll,
     condition: todos.value.length > 0,
@@ -109,7 +109,7 @@ const buttonItems = computed(() => [
     key: "clearAll",
   },
   {
-    value: "导出数据",
+    value: t("ActionMenu.exportData"),
     class: "btn-small action-download",
     action: handleClickDownload,
     condition: todos.value > 0,
@@ -117,7 +117,7 @@ const buttonItems = computed(() => [
     key: "download",
   },
   {
-    value: "导入(txt/json)",
+    value: t("ActionMenu.import"),
     class: "btn-small action-import",
     // 原始代码无 @click，这里假设有一个触发导入的函数
     action: triggerImport,
@@ -136,8 +136,8 @@ const buttonItems = computed(() => [
       :class="{ fold: isShow }"
     >
       <div class="shortcut-switch">
-        <span class="shortcut-title">开✨</span>
-        <span class="shortcut-name">快捷操作 </span>
+        <span class="shortcut-title">{{ t("ActionMenu.open") }}✨</span>
+        <span class="shortcut-name">{{ t("ActionMenu.quickActions") }}</span>
       </div>
     </div>
     <div class="todo-footer-box">
