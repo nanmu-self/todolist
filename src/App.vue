@@ -37,18 +37,18 @@
               type="text"
               rows="3"
               class="add-content"
-              placeholder="新增待办事项..."
+              :placeholder="t('App.newTodoPlaceholder')"
               v-model="newTodoTitle"
               @keyup.enter="addTodo"
               :class="{ empty: emptyChecked }"
             />
             <transition name="tips">
               <div class="tips" v-if="emptyChecked" style="color: red">
-                💡请输入内容！
+                {{ t("App.inputPrompt") }}
               </div>
             </transition>
             <button class="btn submit-btn" type="button" @click="addTodo">
-              提交
+              {{ t("App.submitButton") }}
             </button>
           </div>
         </div>
@@ -57,14 +57,14 @@
         <div class="todo-list-box">
           <Classification />
           <ul v-if="!todos.length" class="empty-tips">
-            <li>添加你的第一个待办事项！📝</li>
-            <li>食用方法💡：</li>
-            <li>✔️ 所有提交操作支持Enter回车键提交</li>
-            <li>✔️ 拖拽Todo上下移动可排序(仅支持PC)</li>
-            <li>✔️ 双击上面的标语和 Todo 可进行编辑</li>
-            <li>✔️ 右侧的小窗口是快捷操作哦</li>
-            <li>🔒 所有的Todo数据存储在浏览器本地</li>
-            <li>📝 支持下载和导入，导入追加到当前序列</li>
+            <li>{{ t("App.emptyTips.addFirst") }}</li>
+            <li>{{ t("App.emptyTips.usage") }}</li>
+            <li>✔️ {{ t("App.emptyTips.enterSubmit") }}</li>
+            <li>✔️ {{ t("App.emptyTips.dragSort") }}</li>
+            <li>✔️ {{ t("App.emptyTips.editInstruction") }}</li>
+            <li>✔️ {{ t("App.emptyTips.quickActions") }}</li>
+            <li>🔒 {{ t("App.emptyTips.dataStorage") }}</li>
+            <li>📝 {{ t("App.emptyTips.importExport") }}</li>
           </ul>
 
           <transition-group
@@ -176,10 +176,16 @@
           </ul>
           <div class="bar-message bar-bottom">
             <div class="bar-message-text">
-              <span v-if="unfinishedTodo.length > 0"
-                >剩余 {{ unfinishedTodo.length }} 项未完成</span
-              >
-              <span v-else-if="completedTodosCount">完美收工！</span>
+              <span v-if="unfinishedTodo.length > 0">
+                {{
+                  t("App.statusBar.remainingItems", {
+                    count: unfinishedTodo.length,
+                  })
+                }}
+              </span>
+              <span v-else-if="completedTodosCount">
+                {{ t("App.statusBar.allCompleted") }}
+              </span>
             </div>
           </div>
         </div>
@@ -199,6 +205,8 @@ import { update, create, get, del } from "@/api/todo.js";
 import { ref, computed, onMounted } from "vue";
 import { useDataStore } from "@/stores/userStore.js";
 import { storeToRefs } from "pinia";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 
 const store = useDataStore();
 const { todos, selectedCategory, pagedData } = storeToRefs(store);
@@ -213,7 +221,6 @@ const emptyChecked = computed(() => {
   return newTodoTitle.value.length === 0 && checkEmpty.value;
 });
 
-// 添加todo
 const addTodo = async () => {
   if (!newTodoTitle.value) {
     checkEmpty.value = true;
@@ -224,29 +231,21 @@ const addTodo = async () => {
     categoryId: selectedCategory.value,
   });
   if (res.errCode == 0) {
-    showMessageBox("🎉添加成功!", "成功");
+    showMessageBox(t("App.messages.createSuccess"), t("App.messages.success"));
     newTodoTitle.value = "";
     store.getTodo();
   } else {
-    showMessageBox(" 😅添加失败!", "失败");
+    showMessageBox(t("App.messages.createFailed"), t("App.messages.error"));
   }
-
-  // todos.value.unshift({
-  //   id: todos.value.length + 1,
-  //   title: newTodoTitle.value,
-  //   completed: false,
-  //   category: selectedCategory.value,
-  // });
 
   checkEmpty.value = false;
   delayTime.value = "0";
 };
-// 未完成的所有项
+
 const unfinishedTodo = computed(() => {
   return todos.value.filter((todo) => !todo.completed);
 });
 
-//双击编辑
 const editdTodo = (todo) => {
   editedTodo.value = {
     id: todo.id,
@@ -259,7 +258,7 @@ const completedTodosCount = computed(() => {
     todos.value.length && todos.value.filter((todo) => todo.completed).length
   );
 });
-// 编辑回车确认
+
 const editDone = (todo) => {
   if (!todo.title) {
     todo.title = editedTodo.value.title;
