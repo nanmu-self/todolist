@@ -81,8 +81,8 @@
           <button class="custom-alert-btn confirm" @click="submit">
             {{
               isLogin
-                ? t("LoginBox.buttons.submit.login")
-                : t("LoginBox.buttons.submit.register")
+                ? t("LoginBox.buttons.submit.register")
+                : t("LoginBox.buttons.submit.login")
             }}
           </button>
         </div>
@@ -133,8 +133,7 @@ const refreshCaptcha = () => {
 const getCode = (scene) => {
   captchaImage.value =
     import.meta.env.VITE_API_URL +
-    `/auth/getcode?uuid=${fingerprint.value}&scene=` +
-    scene;
+    `/auth/getcode?uuid=${fingerprint.value}&scene=${scene}&_=${Date.now()}`;
 };
 // const rules ={
 //     email: [
