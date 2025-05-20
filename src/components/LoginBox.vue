@@ -1,18 +1,21 @@
 <template>
-  <Dialog ref="dialog" :title="isLogin ? '请注册' : '请登录'">
+  <Dialog
+    ref="dialog"
+    :title="isLogin ? t('LoginBox.title.login') : t('LoginBox.title.register')"
+  >
     <template #content>
       <input
         type="text"
         class="custom-alert-input"
         v-model="fromData.email"
-        placeholder="邮箱"
+        :placeholder="t('LoginBox.form.email')"
         required
       />
       <input
         type="password"
         class="custom-alert-input"
         v-model="fromData.password"
-        placeholder="密码"
+        :placeholder="t('LoginBox.form.password')"
         required
       />
       <input
@@ -20,7 +23,7 @@
         type="password"
         class="custom-alert-input"
         v-model="fromData.confirmPassword"
-        placeholder="确认密码"
+        :placeholder="t('LoginBox.form.confirmPassword')"
         required
       />
       <div style="display: flex; align-items: center">
@@ -28,7 +31,7 @@
           type="text"
           class="custom-alert-input"
           v-model="fromData.code"
-          placeholder="验证码"
+          :placeholder="t('LoginBox.form.code')"
           required
           style="margin-right: 8px"
         />
@@ -40,7 +43,7 @@
           type="text"
           class="custom-alert-input"
           v-model="fromData.emailCode"
-          placeholder="邮箱验证码"
+          :placeholder="t('LoginBox.form.emailCode')"
           required
           style="margin-right: 8px; flex: 1"
         />
@@ -49,21 +52,33 @@
           :disabled="emailIsCounting && emailCountDown > 0"
           @click="sendEmailCodeBtn"
         >
-          {{ emailIsCounting ? `${emailCountDown}s` : "获取验证码" }}
+          {{
+            emailIsCounting
+              ? `${emailCountDown}s`
+              : t("LoginBox.buttons.getVerificationCode")
+          }}
         </button>
       </div>
     </template>
     <template #btn>
       <div class="custom-alert-buttons" style="justify-content: space-between">
         <button class="custom-alert-btn confirm" @click="isLogin = !isLogin">
-          {{ isLogin ? "去登录" : "去注册" }}
+          {{
+            isLogin
+              ? t("LoginBox.buttons.toggleMode.toLogin")
+              : t("LoginBox.buttons.toggleMode.toRegister")
+          }}
         </button>
         <div class="custom-alert-buttons">
           <button class="custom-alert-btn cancel" @click="dialog.switchShow()">
-            取消
+            {{ t("LoginBox.buttons.cancel") }}
           </button>
           <button class="custom-alert-btn confirm" @click="submit">
-            {{ isLogin ? "注册" : "登录" }}
+            {{
+              isLogin
+                ? t("LoginBox.buttons.submit.login")
+                : t("LoginBox.buttons.submit.register")
+            }}
           </button>
         </div>
       </div>
@@ -73,11 +88,13 @@
 <script setup>
 import Dialog from "@/common/Dialog.vue";
 import { sendEmailCode, register, login } from "@/api/login.js";
-import { ref, watch } from "vue";
+import { ref, watch, computed } from "vue";
 import { useDataStore } from "@/stores/userStore.js";
 import { storeToRefs } from "pinia";
 import { showMessageBox } from "@/utils/MessageBox.js";
 import md5 from "js-md5";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 const store = useDataStore();
 const { fingerprint, token, email } = storeToRefs(store);
 
@@ -88,9 +105,9 @@ const emailIsCounting = ref(false);
 
 const dialog = ref(null);
 const fromData = ref({
-  email: "157884200@qq.com",
-  password: "z157884200",
-  confirmPassword: "z157884200",
+  email: "",
+  password: "",
+  confirmPassword: "",
   code: "",
   emailCode: "", // 新增邮箱验证码字段
 });
@@ -121,11 +138,11 @@ const sendEmailCodeBtn = async () => {
   if (emailIsCounting.value) return;
   // 邮箱格式验证
   if (!fromData.value.email || !emailRegex.test(fromData.value.email)) {
-    showMessageBox("😅请输入有效的邮箱地址!❓️");
+    showMessageBox(t("LoginBox.validation.emailFormat")); // 修改: "😅请输入有效的邮箱地址!❓️"
     return;
   }
   if (!fromData.value.code) {
-    showMessageBox("😅请输入验证码计算结果!❓️");
+    showMessageBox(t("LoginBox.validation.codeRequired")); // 修改: "😅请输入验证码计算结果!❓️"
     return;
   }
 
@@ -163,13 +180,13 @@ const submit = async () => {
   // 邮箱格式验证
 
   if (!fromData.value.email || !emailRegex.test(fromData.value.email)) {
-    showMessageBox("😅请输入有效的邮箱地址!❓️");
+    showMessageBox(t("LoginBox.validation.emailFormat")); // 修改: "😅请输入有效的邮箱地址!❓️"
     return;
   }
 
   // 密码验证（至少6位）
   if (!fromData.value.password || fromData.value.password.length < 6) {
-    showMessageBox("😅密码需至少6位字符!❓️");
+    showMessageBox(t("LoginBox.validation.passwordLength")); // 修改: "😅密码需至少6位字符!❓️"
     return;
   }
 
@@ -178,13 +195,13 @@ const submit = async () => {
     isLogin.value &&
     fromData.value.password !== fromData.value.confirmPassword
   ) {
-    showMessageBox("😅两次输入的密码不一致❓️");
+    showMessageBox(t("LoginBox.validation.passwordMatch")); // 修改: "😅两次输入的密码不一致❓️"
     return;
   }
 
   // 验证码验证
   if (!fromData.value.code) {
-    showMessageBox("😅请输入验证码计算结果!❓️");
+    showMessageBox(t("LoginBox.validation.codeRequired")); // 修改: "😅请输入验证码计算结果!❓️"
     return;
   }
 
@@ -193,7 +210,7 @@ const submit = async () => {
     isLogin.value &&
     (!fromData.value.emailCode || fromData.value.emailCode.length !== 6)
   ) {
-    showMessageBox("😅请输入6位邮箱验证码!❓️");
+    showMessageBox(t("LoginBox.validation.emailCodeFormat")); // 修改: "😅请输入6位邮箱验证码!❓️"
     return;
   }
   fromData.value.password = md5(fromData.value.password);
@@ -207,7 +224,7 @@ const submit = async () => {
       ...fromData.value,
     }).then((res) => {
       if (res.errCode == 0) {
-        showMessageBox("🎉注册成功!");
+        showMessageBox(t("LoginBox.messages.registerSuccess")); // 修改: "🎉注册成功!"
         token.value = res.data.token;
         email.value = res.data.email;
         dialog.value.switchShow();
@@ -222,7 +239,7 @@ const submit = async () => {
       ...fromData.value,
     }).then((res) => {
       if (res.errCode == 0) {
-        showMessageBox("🎉登录成功!");
+        showMessageBox(t("LoginBox.messages.loginSuccess")); // 修改: "🎉登录成功!"
         token.value = res.data.token;
         email.value = res.data.email;
         dialog.value.switchShow();
