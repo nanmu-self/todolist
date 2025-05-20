@@ -1,29 +1,122 @@
 {
-  "placeholder": "Add a to-do item...",
-  "submit": "Submit",
-
-  "emptyFirst": "Add your first to-do item",
-  "howToUse": "Usage tips",
-  "enterSupported": " Press Enter to submit",
-  "dragSort": " Drag to reorder (PC only)",
-  "editable": " Double-click to edit",
-  "shortcuts": " Side panel for quick actions",
-  "dataStorage": " All data stored locally",
-  "importExport": " Support import/export",
-
-  "languageToggle": "Language",
-  "shortcutName": "Shortcuts",
-  "side-bar": {
-    "shortcutToggleOn": "On✨",
-    "shortcutToggleOff": "Off",
-    "filterAll": "All",
-    "importButton": "Import (txt/json)",
-    "toggleShortcuts": "Toggle shortcuts",
-    "status_in_progress": "In Progress",
-    "status_completed": "Completed",
-    "mark_all_as_completed": "Mark All as Completed",
-    "clear_completed": "Clear Completed",
-    "clear_all": "Clear All",
-    "export_data": "Export Data"
+  "PersonalInformation": {
+    "logout": "Log out",
+    "login": "Log in",
+    "confirmLogout": "Are you sure you want to log out?",
+    "confirm": "Confirm"
+  },
+  "MessageBox": {
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "title": "Notice"
+  },
+  "ContextMenu": {
+    "add": "Add",
+    "modify": "Edit",
+    "remove": "Delete"
+  },
+  "Dialog": {
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "confirmCarefully": "Please confirm carefully."
+  },
+  "ActionMenu": {
+    "confirmCheckAllDone": "Confirm to mark all tasks as done?",
+    "confirmClearAllCompleted": "Confirm to clear all completed tasks?",
+    "confirmClearAllPending": "Confirm to clear all pending tasks?",
+    "import": "Import (txt/json)",
+    "exportData": "Export data",
+    "clearAll": "Clear all",
+    "clearCompleted": "Clear completed",
+    "markAllAsDone": "Mark all as done",
+    "completed": "Completed",
+    "inProgress": "In progress",
+    "all": "All",
+    "quickActions": "Quick actions",
+    "open": "Open"
+  },
+  "Category": {
+    "all": "All",
+    "add": "Add category",
+    "modify": "Edit category",
+    "failure": "Failure",
+    "successful": "Success",
+    "confirmDelete": "Are you sure you want to delete?",
+    "notice": "Notice",
+    "placeholder": {
+      "title": "Category name"
+    },
+    "success": {
+      "create": "🎉 Successfully added!",
+      "update": "🎉 Successfully updated!",
+      "delete": "🎉 Successfully deleted!"
+    },
+    "error": {
+      "create": "😅 Failed to add!",
+      "update": "😅 Failed to update!",
+      "delete": "😅 Failed to delete!"
+    }
+  },
+  "LoginBox": {
+    "title": {
+      "register": "Please register",
+      "login": "Please log in"
+    },
+    "form": {
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm password",
+      "code": "Captcha",
+      "emailCode": "Email verification code"
+    },
+    "buttons": {
+      "getVerificationCode": "Get code",
+      "cancel": "Cancel",
+      "submit": {
+        "register": "Register",
+        "login": "Log in"
+      },
+      "toggleMode": {
+        "toLogin": "Go to login",
+        "toRegister": "Go to register"
+      }
+    },
+    "validation": {
+      "emailRequired": "Please enter your email",
+      "emailFormat": "Please enter a valid email address",
+      "passwordLength": "Password must be at least 6 characters",
+      "passwordMatch": "Passwords do not match",
+      "codeRequired": "Please enter the captcha result",
+      "emailCodeFormat": "Please enter the 6-digit email code"
+    },
+    "messages": {
+      "registerSuccess": "Registration successful!",
+      "loginSuccess": "Login successful!"
+    }
+  },
+  "App": {
+    "newTodoPlaceholder": "Add a new to-do item...",
+    "inputPrompt": "💡 Please enter some content!",
+    "submitButton": "Submit",
+    "emptyTips": {
+      "addFirst": "Add your first to-do! 📝",
+      "usage": "How to use 💡:",
+      "enterSubmit": "Press Enter to submit",
+      "dragSort": "Drag to reorder todos (PC only)",
+      "editInstruction": "Double-click on slogans and todos to edit",
+      "quickActions": "The side panel provides quick actions",
+      "dataStorage": "All todos are stored locally in your browser",
+      "importExport": "Supports download and import (added to current list)"
+    },
+    "statusBar": {
+      "remainingItems": "{count} item(s) remaining",
+      "allCompleted": "All done!"
+    },
+    "messages": {
+      "success": "Success",
+      "error": "Failure",
+      "createSuccess": "🎉 Successfully added!",
+      "createFailed": "😅 Failed to add!"
+    }
   }
 }

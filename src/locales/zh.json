@@ -1,29 +1,123 @@
 {
-  "placeholder": "新增待办事项...",
-  "submit": "提交",
+  "PersonalInformation": {
+    "logout": "退出登录",
+    "login": "登录",
+    "confirmLogout": "请确认，是否退出登录？",
+    "confirm": "请确认"
+  },
+  "MessageBox": {
+    "cancel": "取消",
+    "confirm": "确认",
+    "title": "提示"
+  },
+  "ContextMenu": {
+    "add": "添加",
+    "modify": "修改",
+    "remove": "删除"
+  },
+  "Dialog": {
+    "cancel": "取消",
+    "confirm": "确认",
+    "confirmCarefully": "请仔细确认。"
+  },
+  "ActionMenu": {
+    "confirmCheckAllDone": "确认一键勾选完成全部待办事项？",
+    "confirmClearAllCompleted": "确认清除全部已完成的代办事项?",
+    "confirmClearAllPending": "确认清除全部待办事项?",
+    "import": "导入(txt/json)",
+    "exportData": "导出数据",
+    "clearAll": "清除全部",
+    "clearCompleted": "清除已完成",
+    "markAllAsDone": "全部标为已完成",
+    "completed": "已完成",
+    "inProgress": "进行中",
+    "all": "全部",
+    "quickActions": "快捷操作",
+    "open": "开"
+  },
+  "Category": {
+    "all": "全部",
+    "add": "添加分类",
+    "modify": "修改分类",
+    "failure": "失败",
+    "successful": "成功",
+    "confirmDelete": "确认删除吗？",
+    "notice": "提示",
+    "placeholder": {
+      "title": "分类名"
+    },
+    "success": {
+      "create": "🎉添加成功!",
+      "update": "🎉修改成功!",
+      "delete": "🎉删除成功!"
+    },
+    "error": {
+      "create": "😅添加失败!",
+      "update": "😅修改失败!",
+      "delete": "😅删除失败!"
+    }
+  },
+  "LoginBox": {
+    "title": {
+      "register": "请注册",
+      "login": "请登录"
+    },
+    "form": {
+      "email": "邮箱",
+      "password": "密码",
+      "confirmPassword": "确认密码",
+      "code": "验证码",
+      "emailCode": "邮箱验证码"
+    },
+    "buttons": {
+      "getVerificationCode": "获取验证码",
+      "cancel": "取消",
+      "submit": {
+        "register": "注册",
+        "login": "登录"
+      },
+      "toggleMode": {
+        "toLogin": "去登录",
+        "toRegister": "去注册"
+      }
+    },
+    "validation": {
+      "emailRequired": "请输入邮箱",
+      "emailFormat": "请输入有效的邮箱地址",
+      "passwordLength": "密码需至少6位字符",
+      "passwordMatch": "两次输入的密码不一致",
+      "codeRequired": "请输入验证码计算结果",
+      "emailCodeFormat": "请输入6位邮箱验证码"
+    },
+    "messages": {
+      "registerSuccess": "注册成功!",
+      "loginSuccess": "登录成功!"
+    }
+  },
+  "App": {
+    "newTodoPlaceholder": "新增待办事项...",
+    "inputPrompt": "💡请输入内容！",
+    "submitButton": "提交",
+    "emptyTips": {
+      "addFirst": "添加你的第一个待办事项！📝",
+      "usage": "食用方法💡：",
+      "enterSubmit": "所有提交操作支持Enter回车键提交",
+      "dragSort": "拖拽Todo上下移动可排序(仅支持PC)",
+      "editInstruction": "双击上面的标语和 Todo 可进行编辑",
+      "quickActions": "右侧的小窗口是快捷操作哦",
+      "dataStorage": "所有的Todo数据存储在浏览器本地",
+      "importExport": "支持下载和导入，导入追加到当前序列"
+    },
 
-  "emptyFirst": "添加你的第一个待办事项",
-  "howToUse": "食用方法",
-  "enterSupported": "所有提交操作支持Enter回车键提交",
-  "dragSort": "拖拽Todo上下移动可排序(仅支持PC)",
-  "editable": "双击上面的标语和 Todo 可进行编辑",
-  "shortcuts": "右侧的小窗口是快捷操作哦",
-  "dataStorage": "所有的Todo数据存储在浏览器本地",
-  "importExport": "支持下载和导入，导入追加到当前序列",
-
-  "languageToggle": "语言切换",
-  "shortcutName": "快捷操作",
-  "side-bar": {
-    "shortcutToggleOn": "开✨",
-    "shortcutToggleOff": "关",
-    "filterAll": "全部",
-    "importButton": "导入(txt/json)",
-    "toggleShortcuts": "快捷操作",
-    "status_in_progress": "进行中",
-    "status_completed": "已完成",
-    "mark_all_as_completed": "全部标为已完成",
-    "clear_completed": "清除已完成",
-    "clear_all": "清除全部",
-    "export_data": "导出数据"
+    "statusBar": {
+      "remainingItems": "剩余 {count} 项未完成",
+      "allCompleted": "完美收工！"
+    },
+    "messages": {
+      "success": "成功",
+      "error": "失败",
+      "createSuccess": "🎉添加成功!",
+      "createFailed": " 😅添加失败!"
+    }
   }
 }
