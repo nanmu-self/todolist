@@ -169,7 +169,7 @@
             <li
               class="next"
               v-if="pagedData.currentPage < pagedData.totalPages"
-              @click="changePage(pagedData.currentPage + 1)"
+              @click="store.changePage(pagedData.currentPage + 1)"
             >
               &gt;
             </li>
