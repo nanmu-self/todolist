@@ -221,16 +221,17 @@ const submit = async () => {
     showMessageBox(t("LoginBox.validation.emailCodeFormat")); // 修改: "😅请输入6位邮箱验证码!❓️"
     return;
   }
-  fromData.value.password = md5(fromData.value.password);
+  let data = {
+    uuid: fingerprint.value,
+    scene: isLogin.value ? "register" : "login",
+    ...fromData.value,
+  };
 
+  data.password = md5(fromData.value.password);
   // 通过验证后提交数据（示例）
   console.log("表单验证通过", fromData.value);
   if (isLogin.value) {
-    await register({
-      uuid: fingerprint.value,
-      scene: "register",
-      ...fromData.value,
-    }).then((res) => {
+    await register(data).then((res) => {
       if (res.errCode == 0) {
         showMessageBox(t("LoginBox.messages.registerSuccess")); // 修改: "🎉注册成功!"
         token.value = res.data.token;
@@ -241,11 +242,7 @@ const submit = async () => {
       }
     });
   } else {
-    await login({
-      uuid: fingerprint.value,
-      scene: "login",
-      ...fromData.value,
-    }).then((res) => {
+    await login(data).then((res) => {
       if (res.errCode == 0) {
         showMessageBox(t("LoginBox.messages.loginSuccess")); // 修改: "🎉登录成功!"
         token.value = res.data.token;
