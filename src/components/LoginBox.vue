@@ -35,7 +35,12 @@
           required
           style="margin-right: 8px"
         />
-        <img style="margin-left: 8px" :src="captchaImage" alt="验证码" />
+        <img
+          style="margin-left: 8px"
+          :src="captchaImage"
+          alt="验证码"
+          @click="refreshCaptcha"
+        />
       </div>
 
       <div style="display: flex; align-items: center" v-if="isLogin">
@@ -120,6 +125,10 @@ const switchShow = () => {
 watch(isLogin, (val) => {
   getCode(val ? "register" : "login");
 });
+// 刷新验证码
+const refreshCaptcha = () => {
+  getCode(isLogin.value ? "register" : "login");
+};
 // 获取验证码
 const getCode = (scene) => {
   captchaImage.value =
