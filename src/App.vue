@@ -154,7 +154,7 @@
             <li
               class="previous"
               v-if="pagedData.currentPage > 1"
-              @click="changePage(pagedData.currentPage - 1)"
+              @click="store.changePage(pagedData.currentPage - 1)"
             >
               &lt;
             </li>
