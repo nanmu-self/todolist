@@ -1,8 +1,9 @@
 <script setup>
+import { batchUpdateTodo } from "@/api/todo.js";
 import { ref, computed } from "vue";
-import { useDataStore } from "../stores/userStore.js";
+import { useDataStore } from "@/stores/userStore.js";
 import { storeToRefs } from "pinia";
-import { showMessageBox } from "@/utils/MessageBox.js";
+import { showMessageBox } from "@/common/MessageBox/MessageBox.js";
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 
@@ -13,14 +14,20 @@ const isShow = ref(true);
 const shortCutAction = () => {
   isShow.value = !isShow.value;
 };
-
+//一键完成代办事项
 const markAllAsCompleted = () => {
   // 实现标记全部完成的逻辑
 
-  showMessageBox(t("ActionMenu.confirmCheckAllDone")).then(() => {
-    todos.value.forEach((todo) => {
-      todo.completed = true;
+  showMessageBox(t("ActionMenu.confirmCheckAllDone")).then(async () => {
+    // todos.value.forEach((todo) => {
+    //   todo.completed = true;
+    // });
+    let res = await batchUpdateTodo({
+      ids: todos.value
+        .filter((todo) => !todo.completed) // 过滤掉 completed 为 true 的项
+        .map((todo) => todo._id),
     });
+    console.log(res);
   });
 };
 

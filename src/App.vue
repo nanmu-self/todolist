@@ -200,8 +200,8 @@
 import PersonalInformation from "@/components/PersonalInformation.vue";
 import Classification from "@/components/Classification.vue";
 import ActionMenu from "@/components/ActionMenu.vue";
-import { showMessageBox } from "@/utils/MessageBox.js";
-import { update, create, get, del } from "@/api/todo.js";
+import { showMessageBox } from "@/common/MessageBox/MessageBox.js";
+import { createTodo } from "@/api/todo.js";
 import { ref, computed, onMounted } from "vue";
 import { useDataStore } from "@/stores/userStore.js";
 import { storeToRefs } from "pinia";
@@ -226,7 +226,7 @@ const addTodo = async () => {
     checkEmpty.value = true;
     return;
   }
-  let res = await create({
+  let res = await createTodo({
     title: newTodoTitle.value,
     categoryId: selectedCategory.value,
   });

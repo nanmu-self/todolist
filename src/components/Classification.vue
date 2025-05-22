@@ -40,7 +40,7 @@
 
 <script setup>
 import Dialog from "@/common/Dialog.vue";
-import { showMessageBox } from "@/utils/MessageBox.js";
+import { showMessageBox } from "@/common/MessageBox/MessageBox.js";
 import { del, get, update, create } from "@/api/classification";
 import ContextMenu from "@/common/ContextMenu/ContextMenu.vue";
 import { useDataStore } from "@/stores/userStore.js";

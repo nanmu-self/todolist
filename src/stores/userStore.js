@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
 import FingerprintJS from "@fingerprintjs/fingerprintjs";
 import { ref, computed, watch } from "vue";
-import { showMessageBox } from "@/utils/MessageBox.js";
-import { get } from "@/api/todo.js";
+import { showMessageBox } from "@/common/MessageBox/MessageBox.js";
+import { getTodoApi } from "@/api/todo.js";
 export const useDataStore = defineStore("userdata", () => {
   const intention = ref("all");
   const selectedCategory = ref(0); //分类
@@ -67,7 +67,7 @@ export const useDataStore = defineStore("userdata", () => {
     if (selectedCategory.value !== 0) {
       params.categoryId = selectedCategory.value;
     }
-    get(params).then((res) => {
+    getTodoApi(params).then((res) => {
       if (res.errCode === 0) {
         todos.value = res.data;
         pagedData.value = res.pagination;

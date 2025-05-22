@@ -1,5 +1,5 @@
 import axios from "axios";
-import { showMessageBox } from "@/utils/MessageBox.js";
+import { showMessageBox } from "@/common/MessageBox/MessageBox.js";
 const service = axios.create({
   baseURL: import.meta.env.VITE_API_URL, // 使用环境变量
 });

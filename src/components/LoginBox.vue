@@ -96,7 +96,7 @@ import { sendEmailCode, register, login } from "@/api/login.js";
 import { ref, watch, computed } from "vue";
 import { useDataStore } from "@/stores/userStore.js";
 import { storeToRefs } from "pinia";
-import { showMessageBox } from "@/utils/MessageBox.js";
+import { showMessageBox } from "@/common/MessageBox/MessageBox.js";
 import md5 from "js-md5";
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
