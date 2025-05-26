@@ -79,6 +79,7 @@ const loginBtn = () => {
     ).then(() => {
       email.value = "";
       token.value = "";
+      location.reload()
     });
   } else {
     loginBox.value.switchShow();
