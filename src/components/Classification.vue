@@ -90,7 +90,8 @@ const handleConfirm = () => {
   } else {
     create(fromData.value).then((res) => {
       if (res.errCode == 0) {
-        Message.success(t("Category.success.create"))
+        Message.success(t("Category.success.create"));
+        getMenu()
       } else {
         Message.error(t("Category.error.create"))
       }
