@@ -96,7 +96,7 @@ import { sendEmailCode, register, login } from "@/api/login.js";
 import { ref, watch, computed } from "vue";
 import { useDataStore } from "@/stores/userStore.js";
 import { storeToRefs } from "pinia";
-import { showMessageBox } from "@/common/MessageBox/MessageBox.js";
+import Message from  "@/common/Message/Message.js";
 import md5 from "js-md5";
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
@@ -146,11 +146,11 @@ const sendEmailCodeBtn = async () => {
   if (emailIsCounting.value) return;
   // 邮箱格式验证
   if (!fromData.value.email || !emailRegex.test(fromData.value.email)) {
-    showMessageBox(t("LoginBox.validation.emailFormat")); // 修改: "😅请输入有效的邮箱地址!❓️"
+    Message.error(t("LoginBox.validation.emailRequired"))// 修改: "😅请输入有效的邮箱地址!❓️"
     return;
   }
   if (!fromData.value.code) {
-    showMessageBox(t("LoginBox.validation.codeRequired")); // 修改: "😅请输入验证码计算结果!❓️"
+    Message.error(t("LoginBox.validation.codeRequired")); // 修改: "😅请输入验证码计算结果!❓️"
     return;
   }
 
@@ -168,11 +168,11 @@ const sendEmailCodeBtn = async () => {
   }).then((res) => {
     console.log(res);
     if (res.errCode != 0) {
-      showMessageBox(res.errMsg);
+      Message.success(res.errMsg)
     }
   });
 
-  // 假设发送成功
+ 
   emailIsCounting.value = true;
   const timer = setInterval(() => {
     emailCountDown.value--;
@@ -188,13 +188,13 @@ const submit = async () => {
   // 邮箱格式验证
 
   if (!fromData.value.email || !emailRegex.test(fromData.value.email)) {
-    showMessageBox(t("LoginBox.validation.emailFormat")); // 修改: "😅请输入有效的邮箱地址!❓️"
+    Message.error(t("LoginBox.validation.emailFormat")); // 修改: "😅请输入有效的邮箱地址!❓️"
     return;
   }
 
   // 密码验证（至少6位）
   if (!fromData.value.password || fromData.value.password.length < 6) {
-    showMessageBox(t("LoginBox.validation.passwordLength")); // 修改: "😅密码需至少6位字符!❓️"
+    Message.error(t("LoginBox.validation.passwordLength")); // 修改: "😅密码需至少6位字符!❓️"
     return;
   }
 
@@ -203,13 +203,13 @@ const submit = async () => {
     isLogin.value &&
     fromData.value.password !== fromData.value.confirmPassword
   ) {
-    showMessageBox(t("LoginBox.validation.passwordMatch")); // 修改: "😅两次输入的密码不一致❓️"
+    Message.error(t("LoginBox.validation.passwordMatch")); // 修改: "😅两次输入的密码不一致❓️"
     return;
   }
 
   // 验证码验证
   if (!fromData.value.code) {
-    showMessageBox(t("LoginBox.validation.codeRequired")); // 修改: "😅请输入验证码计算结果!❓️"
+    Message.error(t("LoginBox.validation.codeRequired")); // 修改: "😅请输入验证码计算结果!❓️"
     return;
   }
 
@@ -218,7 +218,7 @@ const submit = async () => {
     isLogin.value &&
     (!fromData.value.emailCode || fromData.value.emailCode.length !== 6)
   ) {
-    showMessageBox(t("LoginBox.validation.emailCodeFormat")); // 修改: "😅请输入6位邮箱验证码!❓️"
+    Message.error(t("LoginBox.validation.emailCodeFormat")); // 修改: "😅请输入6位邮箱验证码!❓️"
     return;
   }
   let data = {
@@ -233,24 +233,25 @@ const submit = async () => {
   if (isLogin.value) {
     await register(data).then((res) => {
       if (res.errCode == 0) {
-        showMessageBox(t("LoginBox.messages.registerSuccess")); // 修改: "🎉注册成功!"
+        Message.success(t("LoginBox.messages.registerSuccess"));// 修改: "🎉注册成功!"
         token.value = res.data.token;
         email.value = res.data.email;
         dialog.value.switchShow();
       } else {
-        showMessageBox(res.errMsg);
+        Message.error(res.errMsg)
+
       }
     });
   } else {
     await login(data).then((res) => {
       if (res.errCode == 0) {
-        showMessageBox(t("LoginBox.messages.loginSuccess")); // 修改: "🎉登录成功!"
+        Message.success(t("LoginBox.messages.loginSuccess")); // 修改: "🎉登录成功!"
         token.value = res.data.token;
         email.value = res.data.email;
         dialog.value.switchShow();
         location.reload();
       } else {
-        showMessageBox(res.errMsg);
+        Message.error(res.errMsg)
       }
     });
   }

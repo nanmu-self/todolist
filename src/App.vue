@@ -197,6 +197,7 @@
   </div>
 </template>
 <script setup>
+import Message from  "@/common/Message/Message.js";
 import PersonalInformation from "@/components/PersonalInformation.vue";
 import Classification from "@/components/Classification.vue";
 import ActionMenu from "@/components/ActionMenu.vue";
@@ -231,11 +232,12 @@ const addTodo = async () => {
     categoryId: selectedCategory.value,
   });
   if (res.errCode == 0) {
-    showMessageBox(t("App.messages.createSuccess"), t("App.messages.success"));
+    Message.success(t("App.messages.createSuccess"));
+  
     newTodoTitle.value = "";
     store.getTodo();
   } else {
-    showMessageBox(t("App.messages.createFailed"), t("App.messages.error"));
+    Message.error(t("App.messages.createFailed"));
   }
 
   checkEmpty.value = false;
