@@ -1,5 +1,6 @@
 import axios from "axios";
-import { showMessageBox } from "@/utils/MessageBox.js";
+import Message from  "@/common/Message/Message.js";
+import { i18n } from "@/main.js";
 const service = axios.create({
   baseURL: import.meta.env.VITE_API_URL, // 使用环境变量
 });
@@ -36,7 +37,7 @@ service.interceptors.response.use(
     // console.log(666);
     // console.log(error);
     if (error.status == 403) {
-      showMessageBox("请先登录");
+      Message.error( i18n.global.t('islogin'))
       localStorage.clear();
     }
     // 超出 2xx 范围的状态码都会触发该函数。

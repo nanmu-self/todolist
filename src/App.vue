@@ -100,13 +100,13 @@
               <div
                 class="todo-btn btn-finish"
                 v-if="!todo.completed"
-                @click="todo.completed = true"
+                @click="debouncedChangeStatus(todo, true)"
               ></div>
               <!-- 标为未完成 -->
               <div
                 class="todo-btn btn-unfinish"
                 v-if="todo.completed"
-                @click="todo.completed = false"
+                @click="debouncedChangeStatus(todo, false)"
               >
                 <img
                   src="./assets/img/checkmark.svg"
@@ -154,7 +154,7 @@
             <li
               class="previous"
               v-if="pagedData.currentPage > 1"
-              @click="changePage(pagedData.currentPage - 1)"
+              @click="store.changePage(pagedData.currentPage - 1)"
             >
               &lt;
             </li>
@@ -197,11 +197,11 @@
   </div>
 </template>
 <script setup>
+import Message from "@/common/Message/Message.js";
 import PersonalInformation from "@/components/PersonalInformation.vue";
 import Classification from "@/components/Classification.vue";
 import ActionMenu from "@/components/ActionMenu.vue";
-import { showMessageBox } from "@/utils/MessageBox.js";
-import { update, create, get, del } from "@/api/todo.js";
+import { createTodo, updateTodo } from "@/api/todo.js";
 import { ref, computed, onMounted } from "vue";
 import { useDataStore } from "@/stores/userStore.js";
 import { storeToRefs } from "pinia";
@@ -220,22 +220,43 @@ const show = ref(true);
 const emptyChecked = computed(() => {
   return newTodoTitle.value.length === 0 && checkEmpty.value;
 });
+// 防抖函数（单位：毫秒）
+const debounce = (fn, delay) => {
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn(...args), delay);
+  };
+};
+
+// 改变单个任务状态
+const debouncedChangeStatus = debounce(async (todo, status) => {
+  const res = await updateTodo({
+    _id: todo._id,
+    completed: status,
+  });
+  
+  if (res.errCode === 0) {
+    todo.completed = status;
+  }
+}, 500);
 
 const addTodo = async () => {
   if (!newTodoTitle.value) {
     checkEmpty.value = true;
     return;
   }
-  let res = await create({
+  let res = await createTodo({
     title: newTodoTitle.value,
     categoryId: selectedCategory.value,
   });
   if (res.errCode == 0) {
-    showMessageBox(t("App.messages.createSuccess"), t("App.messages.success"));
+    Message.success(t("App.messages.createSuccess"));
+
     newTodoTitle.value = "";
     store.getTodo();
   } else {
-    showMessageBox(t("App.messages.createFailed"), t("App.messages.error"));
+    Message.error(t("App.messages.createFailed"));
   }
 
   checkEmpty.value = false;

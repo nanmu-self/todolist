@@ -1,5 +1,5 @@
 import { createVNode, render } from "vue";
-import MessageBox from "@/common/MessageBox.vue";
+import MessageBox from "./MessageBox.vue";
 import { i18n } from "@/main.js";
 export function showMessageBox(message, title) {
   return new Promise((resolve, reject) => {

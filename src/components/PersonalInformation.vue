@@ -56,7 +56,7 @@
 import { ref, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import LoginBox from "@/components/LoginBox.vue";
-import { showMessageBox } from "@/utils/MessageBox.js";
+import { showMessageBox } from "@/common/MessageBox/MessageBox.js";
 import { useDataStore } from "@/stores/userStore.js";
 import { storeToRefs } from "pinia";
 
@@ -79,6 +79,7 @@ const loginBtn = () => {
     ).then(() => {
       email.value = "";
       token.value = "";
+      location.reload()
     });
   } else {
     loginBox.value.switchShow();

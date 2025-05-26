@@ -1,26 +1,33 @@
 <script setup>
+import { batchUpdateTodo,getTodoApi } from "@/api/todo.js";
 import { ref, computed } from "vue";
-import { useDataStore } from "../stores/userStore.js";
+import { useDataStore } from "@/stores/userStore.js";
 import { storeToRefs } from "pinia";
-import { showMessageBox } from "@/utils/MessageBox.js";
+import { showMessageBox } from "@/common/MessageBox/MessageBox.js";
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 
 const store = useDataStore();
-const { intention, todos } = storeToRefs(store);
+const { intention, todos,selectedCategory,pagedData } = storeToRefs(store);
 const isShow = ref(true);
 
 const shortCutAction = () => {
   isShow.value = !isShow.value;
 };
-
+//一键完成代办事项
 const markAllAsCompleted = () => {
   // 实现标记全部完成的逻辑
 
-  showMessageBox(t("ActionMenu.confirmCheckAllDone")).then(() => {
-    todos.value.forEach((todo) => {
-      todo.completed = true;
+  showMessageBox(t("ActionMenu.confirmCheckAllDone")).then(async () => {
+    // todos.value.forEach((todo) => {
+    //   todo.completed = true;
+    // });
+    let res = await batchUpdateTodo({
+      ids: todos.value
+        .filter((todo) => !todo.completed) // 过滤掉 completed 为 true 的项
+        .map((todo) => todo._id),
     });
+    console.log(res);
   });
 };
 
@@ -50,6 +57,18 @@ const triggerImport = () => {
   // 实现触发文件选择或导入的逻辑
 };
 
+//查看进行中的任务
+const showOngoing = () => {
+  let params = {completed:false} 
+  if(selectedCategory.value) params.categoryId = selectedCategory.value.id;
+
+  getTodoApi(params).then((res) => {
+     intention.value = "ongoing";
+     todos.value=res.data;
+     pagedData.value=res.pagination
+  })
+};
+
 // 定义按钮数据数组
 const buttonItems = computed(() => [
   {
@@ -63,7 +82,7 @@ const buttonItems = computed(() => [
   {
     value: t("ActionMenu.inProgress"),
     class: "btn-small action-progress",
-    action: () => (intention.value = "ongoing"),
+    action: showOngoing,
     condition: todos.value.some((todo) => !todo.completed), // 当有未完成待办时显示
     isSelected: intention.value === "ongoing",
     key: "ongoing",
@@ -136,7 +155,7 @@ const buttonItems = computed(() => [
       :class="{ fold: isShow }"
     >
       <div class="shortcut-switch">
-        <span class="shortcut-title">{{ t("ActionMenu.open") }}✨</span>
+        <span class="shortcut-title">{{isShow? t("ActionMenu.close"):t("ActionMenu.open") }}</span>
         <span class="shortcut-name">{{ t("ActionMenu.quickActions") }}</span>
       </div>
     </div>

@@ -40,12 +40,13 @@
 
 <script setup>
 import Dialog from "@/common/Dialog.vue";
-import { showMessageBox } from "@/utils/MessageBox.js";
+import { showMessageBox } from "@/common/MessageBox/MessageBox.js";
 import { del, get, update, create } from "@/api/classification";
 import ContextMenu from "@/common/ContextMenu/ContextMenu.vue";
 import { useDataStore } from "@/stores/userStore.js";
 import { storeToRefs } from "pinia";
 import { ref, onMounted, nextTick } from "vue";
+import Message from  "@/common/Message/Message.js";
 
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
@@ -81,17 +82,18 @@ const handleConfirm = () => {
   if (fromData.value.categoryId) {
     update(fromData.value).then((res) => {
       if (res.errCode == 0) {
-        showMessageBox(t("Category.success.update"), t("Category.successful"));
+        Message.success(t("Category.success.update"))
       } else {
-        showMessageBox(t("Category.error.update"), t("Category.failure"));
+        Message.error(t("Category.error.update"))
       }
     });
   } else {
     create(fromData.value).then((res) => {
       if (res.errCode == 0) {
-        showMessageBox(t("Category.success.create"), t("Category.successful"));
+        Message.success(t("Category.success.create"));
+        getMenu()
       } else {
-        showMessageBox(t("Category.error.create"), t("Category.failure"));
+        Message.error(t("Category.error.create"))
       }
     });
   }
