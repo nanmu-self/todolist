@@ -100,13 +100,13 @@
               <div
                 class="todo-btn btn-finish"
                 v-if="!todo.completed"
-                @click="todo.completed = true"
+                @click="debouncedChangeStatus(todo, true)"
               ></div>
               <!-- 标为未完成 -->
               <div
                 class="todo-btn btn-unfinish"
                 v-if="todo.completed"
-                @click="todo.completed = false"
+                @click="debouncedChangeStatus(todo, false)"
               >
                 <img
                   src="./assets/img/checkmark.svg"
@@ -197,12 +197,11 @@
   </div>
 </template>
 <script setup>
-import Message from  "@/common/Message/Message.js";
+import Message from "@/common/Message/Message.js";
 import PersonalInformation from "@/components/PersonalInformation.vue";
 import Classification from "@/components/Classification.vue";
 import ActionMenu from "@/components/ActionMenu.vue";
-import { showMessageBox } from "@/common/MessageBox/MessageBox.js";
-import { createTodo } from "@/api/todo.js";
+import { createTodo, updateTodo } from "@/api/todo.js";
 import { ref, computed, onMounted } from "vue";
 import { useDataStore } from "@/stores/userStore.js";
 import { storeToRefs } from "pinia";
@@ -221,6 +220,26 @@ const show = ref(true);
 const emptyChecked = computed(() => {
   return newTodoTitle.value.length === 0 && checkEmpty.value;
 });
+// 防抖函数（单位：毫秒）
+const debounce = (fn, delay) => {
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn(...args), delay);
+  };
+};
+
+// 改变单个任务状态
+const debouncedChangeStatus = debounce(async (todo, status) => {
+  const res = await updateTodo({
+    _id: todo._id,
+    completed: status,
+  });
+  
+  if (res.errCode === 0) {
+    todo.completed = status;
+  }
+}, 500);
 
 const addTodo = async () => {
   if (!newTodoTitle.value) {
@@ -233,7 +252,7 @@ const addTodo = async () => {
   });
   if (res.errCode == 0) {
     Message.success(t("App.messages.createSuccess"));
-  
+
     newTodoTitle.value = "";
     store.getTodo();
   } else {
