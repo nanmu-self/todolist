@@ -34,7 +34,8 @@
     "inProgress": "进行中",
     "all": "全部",
     "quickActions": "快捷操作",
-    "open": "开"
+    "open": "开✨",
+    "close":  "关"
   },
   "Category": {
     "all": "全部",

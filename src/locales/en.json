@@ -34,7 +34,8 @@
     "inProgress": "In progress",
     "all": "All",
     "quickActions": "Quick actions",
-    "open": "Open"
+    "open": "Open",
+    "close":  "="
   },
   "Category": {
     "all": "All",

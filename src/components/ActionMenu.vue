@@ -143,7 +143,7 @@ const buttonItems = computed(() => [
       :class="{ fold: isShow }"
     >
       <div class="shortcut-switch">
-        <span class="shortcut-title">{{ t("ActionMenu.open") }}✨</span>
+        <span class="shortcut-title">{{isShow? t("ActionMenu.close"):t("ActionMenu.open") }}</span>
         <span class="shortcut-name">{{ t("ActionMenu.quickActions") }}</span>
       </div>
     </div>
